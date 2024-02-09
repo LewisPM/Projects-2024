@@ -1,13 +1,9 @@
 import random
 
 # IDE does not support input, and returns EOFError
-"""
 name = input("What is your name?: ")
 question = input("What is your question?: ")
 
-"""
-name = "David"
-question = "Are you tired?"
 answer = ""
 
 number = random.randint(1,9)
