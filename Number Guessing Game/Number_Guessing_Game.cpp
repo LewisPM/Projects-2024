@@ -6,7 +6,7 @@ using namespace std;
 
 int main() {
     srand(time(0));
-    int randoNum = rand() % 100;
+    int randoNum = (rand() % 100) + 1;
 
     cout<<"I thought of a number between 1 and 100! Try to guess it."<<endl;
 
@@ -19,10 +19,16 @@ int main() {
 
         if (guess < randoNum && guessesLeft > 1){
             cout<<"Wrong! My number is bigger."<<endl;
+            if (lower < guess){
+                lower = guess + 1;
+            }
         } else if (guess > randoNum && guessesLeft > 1){
-                cout<<"Wrong! My number is smaller."<<endl;
+            cout<<"Wrong! My number is smaller."<<endl;
+            if (upper > guess){
+                upper = guess + 1;
+            }
         } else if (guess == randoNum){
-            cout<<"Congrats! You guessed my number in "<<(5 - guessesLeft)<<"guesses.";
+            cout<<"Congrats! You guessed my number in "<<(5 - guessesLeft)<<" guesses.";
             exit(0);
         } else {
             cout<<"Out of guesses! My number is "<<randoNum;
