@@ -28,7 +28,8 @@ int main() {
                 upper = guess + 1;
             }
         } else if (guess == randoNum){
-            cout<<"Congrats! You guessed my number in "<<(5 - guessesLeft)<<" guesses.";
+            int guessCount = 5 - --guessesLeft;
+            cout<<"Congrats! You guessed my number in "<<guessCount<<" guesses.";
             exit(0);
         } else {
             cout<<"Out of guesses! My number is "<<randoNum;
