@@ -25,7 +25,7 @@ int main() {
         } else if (guess > randoNum && guessesLeft > 1){
             cout<<"Wrong! My number is smaller."<<endl;
             if (upper > guess){
-                upper = guess + 1;
+                upper = guess - 1;
             }
         } else if (guess == randoNum){
             int guessCount = 5 - --guessesLeft;
@@ -35,4 +35,6 @@ int main() {
             cout<<"Out of guesses! My number is "<<randoNum;
         }
     }
+
+    
 }
