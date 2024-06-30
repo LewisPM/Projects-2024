@@ -3,11 +3,11 @@
 
 ## About:
 
-A checkbook balancing program. The program receives the following inputs via the console for all checks that were not recorded since the last checkbook balance:
+A checkbook balancing program. The program receives the following inputs via the console for all checks that were not cashed since the last checkbook balance:
 
-    * _The number of each check (integer)_
-    * _The amount of the check (double)_
-    * _Whether the check was cashed or not (boolean)_
+* _The number of each check (integer)_
+* _The amount of the check (double)_
+* _Whether the check was cashed or not (boolean)_
 
 Project parameters originate from an NYU Bridge Course assignment.
 
