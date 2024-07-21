@@ -2,25 +2,36 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="city_style.css">
         <title>NY: Buffalo Info</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
     </head>
     <body>
-        <a id="logo" href="./index.html"><img src="./Resources/NYStateInfo_logo.png" alt="'New York State' superimposed on an sillohette"></a>
+        <div id="logo_tipitop">
+            <a href="./index.html"><img id="logo" src="./Resources/NYStateInfo_logo.png" alt="'New York State' superimposed on a silhouette of the state; the website logo"></a>
+        </div>
         <nav>
             <a href="./index.html">Home</a>
             <a href="./albany_info.html">Albany</a>
             <a href="./buffalo_info.html">Buffalo</a>
             <a href="./nyc_info.html">NYC</a>
             <a href="./contact.html">Contact</a>
+            <form role="search" action="https://www.bing.com/search?" target="_blank">
+                <label for="search">Search:</label>
+                <input placeholder="Search Bing" type="search" id="search" name="q">
+                <button>Go!</button>
+            </form>
         </nav>
-        <h1>Buffalo</h1>
-        <img src="./Resources/GettyImages-182743353-9ce12e9ac3d34112b198a4c9f6263cb3.jpg" alt="Statue of Libery and the New York City Skyline">
+        <section class="first_section" id="section_one">
+            <h1>Buffalo</h1>
+        <img src="./Resources/GettyImages-182743353-9ce12e9ac3d34112b198a4c9f6263cb3.jpg" alt="Three story brick buildings in the foreground and wide gold and silver skyscrappers in the background">
         <cite>Getty Images/benedek</cite>
-        <section>
             <h2>Notoriety</h2>
             <p>Buffalo is know for its historic architecture, urban parks and landmarks, sports, winters and its iconic food - Buffalo Wings.</p>
         </section>
-        <section>
+        <section class="mid_section">
             <h2>Information</h2>
             <p>Buffalo is an urban area totalling 472 sq miles/ 1,224 sq kilometers, located South East of New York State.</p>
             <p>In 1620 the French explored the area that was considered terriories for the Mohawk rtibe of Native Americans. A French settlement existed for a year in 1758. After the French and Indian War
@@ -35,9 +46,11 @@
                 <sup><a href="https://www.bls.gov/regions/northeast/summary/blssummary_buffalo.pdf">3</a></sup>
             </p>
         </section>
-        <section>
+        <section class="mid_section">
             <h2>History</h2>
-            <img src="./Resources/640px-Flag_of_Buffalo,_New_York.svg.png" alt="Flag of New York City">
+            <img src="./Resources/640px-Flag_of_Buffalo,_New_York.svg.png" alt="A white circle with rays and stars between the rays, the circle contains the image of a boat and lighthouse all superimposed on a blue background">
+            <br>
+            <cite>By City of Buffalo New York - <a href="https://commons.wikimedia.org/wiki/File:Flag_of_Buffalo,_New_York.svg">Public Domain</a></cite>
             <p>In the mid 18th century, the Erie Canal was completed and lead to an economic boom by increasing the connectivity of various settlements. 
                As the anti-slavery movement grew, Buffalo became a gathering place for Abolitionists and was a terminus point on the Underground Railroad.
                <sup><a href="https://www.academia.edu/37788838/THE_UNDERGROUND_RAILROAD">4</a></sup>
@@ -53,10 +66,9 @@
                 Resistance to modernization lead to a decline, losing 70,000 jobs between 1970 and 1984.
                 Economic recovery from deinsurtialization was a focus for Buffalo in the late 20th century.
                 <sup><a href="https://www.tandfonline.com/doi/full/10.1111/j.1467-9906.2012.00625.x">5</a></sup>
-
             </p>
         </section>
-        <section>
+        <section class="last_section">
             <h2>Climate</h2>
             <p>Buffalo has four seasons with cold winters and humid summers.</p>
             <br>
@@ -160,13 +172,17 @@
                 </tbody>
             </table>
         </section>
+        <footer>
+            <div id="footer_links">
+                <a href="./albany_info.html">Albany</a>
+                <a href="./buffalo_info.html">Buffalo</a>
+                <a href="./nyc_info.html">NYC</a>
+                <a href="./contact.html">Contact</a>
+            </div>
+            <div id="footer_copyright_logo">
+                <a href="./index.html"><img id="footer_logo" src="./Resources/NYStateInfo_logo.png" alt="'New York State' superimposed on a silhouette of the state; the website logo"></a>
+                <p>&copy; Pauline Lewis NY, NY 2024</p>
+            </div>
+        </footer>
     </body>
-    <footer>
-        <a href="./albany_info.html">Albany</a>
-        <a href="./buffalo_info.html">Buffalo</a>
-        <a href="./nyc_info.html">NYC</a>
-        <a href="./contact.html">Contact</a>
-        <p>&copy; Pauline Lewis NY, NY 2024</p>
-        <a id="logo" href="./index.html"><img src="./Resources/NYStateInfo_logo.png" alt="New York State Info Logo"></a>
-    </footer>
 </html>

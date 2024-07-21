@@ -2,20 +2,33 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="city_style.css">
         <title>NY: NYC Info</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
     </head>
     <body>
-        <a id="logo" href="./index.html"><img src="./Resources/NYStateInfo_logo.png" alt="'New York State' superimposed on an sillohette"></a>
+        <div id="logo_tipitop">
+            <a href="./index.html"><img id="logo" src="./Resources/NYStateInfo_logo.png" alt="'New York State' superimposed on a silhouette of the state; the website logo"></a>
+        </div>
         <nav>
             <a href="./index.html">Home</a>
             <a href="./albany_info.html">Albany</a>
             <a href="./buffalo_info.html">Buffalo</a>
             <a href="./nyc_info.html">NYC</a>
             <a href="./contact.html">Contact</a>
+            <form role="search" action="https://www.bing.com/search?" target="_blank">
+                <label for="search">Search:</label>
+                <input placeholder="Search Bing" type="search" id="search" name="q">
+                <button>Go!</button>
+            </form>
         </nav>
-        <h1>New York City</h1>
-        <img src="./Resources/New-York-City-Getty-STGnews.jpg" alt="Statue of Libery and the New York City Skyline">
-        <section>
+        <section class="first_section" id="section_one">
+            <h1>New York City</h1>
+            <img src="./Resources/New-York-City-Getty-STGnews.jpg" alt="Statue of Libery and the New York City Skyline">
+            <br>
+            <cite>St George News Archives - <a href="https://archives.stgeorgeutah.com/news/archive/2018/05/27/prc-community-on-the-go-takes-travelers-on-a-tour-of-new-york-city-art-theater-and-culture/">Cedar City News</a></cite>
             <h2>Notoriety</h2>
             <p>New York City is so well known, 
                 it is sometimes referred to as the cultural epicenter of the world. Highly referenced in film and music,
@@ -26,7 +39,7 @@
                 <sup><a href="https://www.census.gov/quickfacts/geo/chart/ID/PST045222">1</a></sup>
             </p>
         </section>
-        <section>
+        <section class="mid_section">
             <h2>Information</h2>
             <p>New York City is an urban area totalling 472 sq miles/ 1,224 sq kilometers, located South East in New York State at its water surrounded end.</p>
             <p>In 1614 the Dutch settled on Manhattan Island. 10 years later, New Amsterdam was founded and in 1626 the Dutch bought Manhattan Island from the Lenape Native American tribe.
@@ -34,18 +47,20 @@
                 <sup><a href="https://theculturetrip.com/north-america/usa/new-york/articles/top-12-historical-events-that-shaped-nyc">2</a></sup>
             </p>
             <p>The estimated total population as of 2023 is 8,258,035.
-                <sup><a href="https://www.census.gov/quickfacts/geo/chart/newyorkcitynewyork,NY,ID/PST045223">2</a></sup>
+                <sup><a href="https://www.census.gov/quickfacts/geo/chart/newyorkcitynewyork,NY,ID/PST045223">3</a></sup>
             </p>
             <p>The estimated average yearly income is $78,900 (compared to $62,960 average in the U.S.).
-                <sup><a href="https://www.bls.gov/regions/northeast/summary/blssummary_newyorkcity.pdf">2</a></sup>
+                <sup><a href="https://www.bls.gov/regions/northeast/summary/blssummary_newyorkcity.pdf">4</a></sup>
             </p>
         </section>
-        <section>
+        <section class="mid_section">
             <h2>History</h2>
-            <img src="./Resources/Flag_of_New_York_City.svg" alt="Flag of New York City">
-            <p>From the late 18th to the late 19th century, New York City started resemble what it does today. 
+            <img src="./Resources/Flag_of_New_York_City.svg" alt="Blue left, white middle and orange right, in the middle is a colonial man on the left and a native american man holding a bow to the right of a crest 1625">
+            <br>
+            <cite>By City of New York - <a href="https://commons.wikimedia.org/wiki/File:Flag_of_New_York_City.svg">Public Domain</a></cite>
+            <p>From the late 18th to the late 19th century, New York City started to resemble what it does today. 
                 The Erie Canal lead to an economic boom by increasing the connectivity of various settlements. 
-                Many notable companys also started around this time such as American Express, Chase, At&T, IBM, Pfizer, Macy's, General Electric, Goldman Sachs and others.
+                Many notable companies also started around this time such as American Express, Chase, At&T, IBM, Pfizer, Macy's, General Electric, Goldman Sachs and others.
                 New York City was the largest port of entry for legal immigration. Ellis Island was opened January 1st 1892 and stopped immigration processing November 12th 1954.
             </p>
             <aside>
@@ -57,24 +72,24 @@
                 </a>
             </aside>
             <p>Today, Queens is the most ethnically diverse urban area in the world.</p>
+            <h3>Notable events:</h3>
             <ul>
-                <p>Notable events:</p>
                 <li>The United Nations was founded in 1945 after World War 2. In 1952 New York City became the headquarters for the United Nations.</li>
                 <li>The Stonewall Riots of 1969; This is considered a pivotal moment of LGBT rights movement.</li>
                 <li>February 26th 1993, terrorists detonated a truck bomb at the World Trade Center.</li>
                 <li>September 11th 2001, Al Qaeda attacked the World Trade Center by sending planes into the Twin Towers.</li>
                 <li>November 3rd, 2014, One World Trade Center opens and is the tallest building in the Western world by architectural height.</li>
                 <li>May 25, 2020, The murder of George Floyd leads to a series of protests throughout the world.
-                    <sup><a href="https://en.wikipedia.org/wiki/Timeline_of_New_York_City">2</a></sup>
+                    <sup><a href="https://en.wikipedia.org/wiki/Timeline_of_New_York_City">5</a></sup>
                 </li>
             </ul>
         </section>
-        <section>
+        <section class="last_section">
             <h2>Top 3 Tourist Locations Ordered by Visitors</h2>
             <ol>
                 <li>Times Square: An estimated 50 million visitors visit this area of the city every year. 
                     There are a whole host of shops and attractions, such as the M&M Store, Broadway Play theatres, 
-                    Madame Tussades and the huge bright ads that decorate the myriad of skyscrapers.
+                    Madame Tussauds and the huge bright ads that decorate the myriad of skyscrapers.
                 </li>
                 <li>
                     Central Park: An estimated 42 million visitors visit this area of the city every year.
@@ -83,17 +98,21 @@
                 <li>
                     Grand Central Terminal: An estimated 22 million visitors visit this area of the city every year.
                     It has impressive architecture and is referenced in many films and tv shows.
-                    <sup><a href="https://www.xola.com/articles/nyc-tourism-stats-round-up-post/#:~:text=1%201.%20Times%20Square%20Times%20Square%20is%20one,Museum%20of%20Art%20%28The%20Met%29%20...%20More%20items">2</a></sup>
+                    <sup><a href="https://www.xola.com/articles/nyc-tourism-stats-round-up-post/#:~:text=1%201.%20Times%20Square%20Times%20Square%20is%20one,Museum%20of%20Art%20%28The%20Met%29%20...%20More%20items">6</a></sup>
                 </li>
             </ol>
         </section>
+        <footer>
+            <div id="footer_links">
+                <a href="./albany_info.html">Albany</a>
+                <a href="./buffalo_info.html">Buffalo</a>
+                <a href="./nyc_info.html">NYC</a>
+                <a href="./contact.html">Contact</a>
+            </div>
+            <div id="footer_copyright_logo">
+                <a href="./index.html"><img id="footer_logo" src="./Resources/NYStateInfo_logo.png" alt="'New York State' superimposed on a silhouette of the state; the website logo"></a>
+                <p>&copy; Pauline Lewis NY, NY 2024</p>
+            </div>
+        </footer>
     </body>
-    <footer>
-        <a href="./albany_info.html">Albany</a>
-        <a href="./buffalo_info.html">Buffalo</a>
-        <a href="./nyc_info.html">NYC</a>
-        <a href="./contact.html">Contact</a>
-        <p>&copy; Pauline Lewis NY, NY 2024</p>
-        <a id="logo" href="./index.html"><img src="./Resources/NYStateInfo_logo.png" alt="New York State Info Logo"></a>
-    </footer>
 </html>

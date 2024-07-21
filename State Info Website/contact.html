@@ -2,16 +2,26 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>NY: Buffalo Info</title>
+        <title>NY State Info: Contact</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
     </head>
     <body>
+        <div id="logo_tipitop">
+            <a href="./index.html"><img id="logo" src="./Resources/NYStateInfo_logo.png" alt="'New York State' superimposed on an sillohette of the state; the website logo"></a>
+        </div>
         <nav>
-            <a id="logo" href="./index.html"><img src="./Resources/NYStateInfo_logo.png" alt="'New York State' superimposed on an sillohette"></a>
             <a href="./index.html">Home</a>
             <a href="./albany_info.html">Albany</a>
             <a href="./buffalo_info.html">Buffalo</a>
             <a href="./nyc_info.html">NYC</a>
             <a href="./contact.html">Contact</a>
+            <form role="search" action="https://www.bing.com/search?" target="_blank">
+                <label for="search">Search:</label>
+                <input placeholder="Search Bing" type="search" id="search" name="q">
+                <button>Go!</button>
+            </form>
         </nav>
         <h1>Contact</h1>
         <section>
@@ -41,11 +51,15 @@
         </section>
     </body>
     <footer>
-        <a href="./albany_info.html">Albany</a>
-        <a href="./buffalo_info.html">Buffalo</a>
-        <a href="./nyc_info.html">NYC</a>
-        <a href="./contact.html">Contact</a>
-        <p>&copy; Pauline Lewis NY, NY 2024</p>
-        <a id="logo" href="./index.html"><img src="./Resources/NYStateInfo_logo.png" alt="New York State Info Logo"></a>
+        <div id="footer_links">
+            <a href="./albany_info.html">Albany</a>
+            <a href="./buffalo_info.html">Buffalo</a>
+            <a href="./nyc_info.html">NYC</a>
+            <a href="./contact.html">Contact</a>
+        </div>
+        <div id="footer_copyright_logo">
+            <a href="./index.html"><img id="footer_logo" src="./Resources/NYStateInfo_logo.png" alt="'New York State' superimposed on an sillohette of the state; the website logo"></a>
+            <p>&copy; Pauline Lewis NY, NY 2024</p>
+        </div>
     </footer>
 </html>

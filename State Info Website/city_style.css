@@ -1,0 +1,172 @@
+* {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 300;
+    margin: 0%;
+    font-size: 95%;
+}
+
+section {
+    margin: 0rem 2rem;
+}
+
+#section_one {
+    padding-top: 3rem;
+}
+
+h1 {
+    text-align: center;
+    font-size: larger;
+}
+
+#section_one img {
+    width: 45%;
+    float: right;
+    margin-left: 1rem;
+    height: 20%;
+}
+
+#section_one cite {
+    clear: right;
+    float: right;
+    padding-bottom: 0.5rem;
+    width: 45%;
+
+}
+
+section img {
+    width: 35%;
+    float: left;
+    padding-right: 3rem;
+    padding-bottom: 1rem;
+}
+
+.mid_section cite, .last_section cite {
+    float: left;
+    clear: left;
+    width: 35%;
+    padding-bottom: 0.5rem;
+    padding-right: 20rem ;
+}
+
+h1, h2, h3 {
+    font-family: "DM Serif Display", serif;
+    margin: 1rem 0rem;
+}
+
+h2, h3 {
+    text-decoration: underline;
+}
+
+nav a:hover {
+    color: blue;
+    text-decoration: underline;
+
+}
+
+nav {
+    position: absolute;
+    width: 100%;
+    background-color: rgb(202, 202, 202);
+    text-align: center;
+    padding: 0.5rem 0rem;
+    border-bottom: 2px grey solid;
+}
+
+#logo_tipitop {
+    background-color: grey;
+    padding: 0.5rem 0;
+}
+nav a {
+    float: left;
+    margin: 0 0.5rem;
+    text-decoration: none;
+    color: black;
+    
+}
+
+nav form {
+    float: right;
+}
+
+#logo {
+    display: block;
+    height: 4rem;
+    margin: 0 auto;
+    border-radius: 10%;
+}
+#footer_logo {
+    position: relative;
+    left: 2rem;
+    display: inline-block;
+    height: 6rem;
+    border-radius: 10%;
+}
+
+footer {
+    margin-top: 10%;
+    background-color: grey;
+    padding: 0.5rem;
+    width: 100%;
+    height: 9rem;
+}
+
+footer a {
+    display: inline-block;
+    width: 40%;
+    margin: 0 auto;
+    margin-top:1rem;
+    padding: 0.5rem;
+    text-align: left;
+    font-weight: 500;
+    text-decoration: none;
+    color: black;
+}
+
+footer a:hover {
+    color: blue;
+    text-decoration: underline;
+}
+
+footer p {
+    font-size: smaller;
+    float: left;
+    width: 40%;
+    text-wrap: nowrap;
+    padding-top: 3rem;
+    font-weight: 400;
+}
+
+#footer_links {
+    width: 40%;
+    height: 8rem;
+    float: left;
+}
+
+#footer_copyright_logo {
+    width: 60%;
+    height: 8rem;
+    text-align: right;
+    float: right;
+}
+
+aside {
+    background-color: rgb(202, 202, 202);
+    display: block;
+    width: 30%;
+    float: right;
+    padding: 0.5rem;
+    margin: 1rem;
+    font-size: 80%;
+}
+
+aside em {
+    font-size: smaller;
+}
+
+p {
+    margin-top: 1rem; 
+}
+
+.last_section {
+    padding-bottom: 2rem;
+}
