@@ -4,19 +4,32 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="style.css">
         <title>NY State Info</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
     </head>
     <body>
-        <a id="logo" href="./index.html"><img src="./Resources/NYStateInfo_logo.png" alt="'New York State' superimposed on an sillohette"></a>
+        <div id="logo_tipitop">
+            <a href="./index.html"><img id="logo" src="./Resources/NYStateInfo_logo.png" alt="'New York State' superimposed on an sillohette"></a>
+        </div>
         <nav>
             <a href="./index.html">Home</a>
             <a href="./albany_info.html">Albany</a>
             <a href="./buffalo_info.html">Buffalo</a>
             <a href="./nyc_info.html">NYC</a>
             <a href="./contact.html">Contact</a>
+            <form role="search" action="https://www.bing.com/search?" target="_blank">
+                <label for="search">Search:</label>
+                <input placeholder="Search Bing" type="search" id="search" name="q">
+                <button>Go!</button>
+            </form>
+
         </nav>
-        <h1>New York State</h1>
-        <img src="./Resources/640px-Flag_of_New_York.svg.png" alt="Flag of New York State">
-        <section>
+        <section class="first_section" id="section_one">
+            <h1>New York State</h1>
+            <img src="./Resources/Flag_of_New_York.png" alt="Flag of New York State">
+            <br>
+            <cite>By State of New York - <a href="https://commons.wikimedia.org/w/index.php?curid=527599">Public Domain</a></cite>
             <h2>Introduction</h2>
             <p>New York State is home to New York City (one of the most recognized cities in the world).
                 The most notable locations for the state are Manhattan, the Catskills, the Finger Lakes, the Appalachian Mountains, and Niagra Falls.
@@ -34,7 +47,7 @@
                 <li><a href="./buffalo_info.html">Buffalo</a></li>
             </ul>
         </section>
-        <section>
+        <section class="mid_section">
             <h2>History</h2>
             <p>New York State was one of the original Thirteen Colonies that formed the United States.
                 Initially it was inhabited by Native Americans for thousands of years. The Dutch established a multiethnic colony in 1621. 
@@ -63,9 +76,10 @@
 
             </p>
         </section>
-        <section>
+        <section class="mid_section">
             <h2>Agriculture and Geography</h2>
             <img src="./Resources/Niagra_Falls.jpg" alt="Water casscading down a cravas under a bridge surrounded by trees">
+            <br>
             <cite>Patrick Donovan/Getty Images</cite>
             <p>New York has four seasons with a generally humid climate. 
                 Beyond the cities, New York has many meadows, forests, rivers, mountaints and lakes. There are 22 national parks, and 27 natural landmarks.
@@ -75,17 +89,21 @@
                 In fact, New York is the largest producers of cabbage in the United states.
             </p>
         </section>
-        <section>
+        <section class="last_section">
             <h3>Ending Remarks</h3>
             <p>New York is a special place with something for everyone, from big cities to big parks. It is a strong contender for "Places to Visit".</p>
         </section>
         <footer>
-            <a href="./albany_info.html">Albany</a>
-            <a href="./buffalo_info.html">Buffalo</a>
-            <a href="./nyc_info.html">NYC</a>
-            <a href="./contact.html">Contact</a>
-            <p>&copy; Pauline Lewis NY, NY 2024</p>
-            <a id="footer_logo" href="./index.html"><img src="./Resources/NYStateInfo_logo.png" alt="New York State Info Logo"></a>
+            <div id="footer_links">
+                <a href="./albany_info.html">Albany</a>
+                <a href="./buffalo_info.html">Buffalo</a>
+                <a href="./nyc_info.html">NYC</a>
+                <a href="./contact.html">Contact</a>
+            </div>
+            <div id="footer_copyright_logo">
+                <a href="./index.html"><img id="footer_logo" src="./Resources/NYStateInfo_logo.png" alt="New York State Info Logo"></a>
+                <p>&copy; Pauline Lewis NY, NY 2024</p>
+            </div>
         </footer>
     </body>
 </html>
