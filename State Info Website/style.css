@@ -15,6 +15,7 @@ section {
 
 h1 {
     text-align: center;
+    font-size: larger;
 }
 
 #section_one img {
@@ -30,8 +31,10 @@ h2, h3 {
     text-decoration: underline;
 }
 
-nav :hover {
+nav a:hover {
     color: blue;
+    text-decoration: underline;
+
 }
 
 nav {
@@ -50,6 +53,9 @@ nav {
 nav a {
     float: left;
     margin: 0 0.5rem;
+    text-decoration: none;
+    color: black;
+    
 }
 
 nav form {
@@ -84,13 +90,23 @@ footer a {
     margin-top:1rem;
     padding: 0.5rem;
     text-align: left;
+    font-weight: 500;
+    text-decoration: none;
+    color: black;
+}
+
+footer a:hover {
+    color: blue;
+    text-decoration: underline;
 }
 
 footer p {
     font-size: smaller;
-    width: 40%;
     float: left;
+    width: 40%;
+    text-wrap: nowrap;
     padding-top: 3rem;
+    font-weight: 400;
 }
 
 #footer_links {
