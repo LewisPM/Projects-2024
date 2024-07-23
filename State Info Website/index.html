@@ -2,34 +2,57 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="style.css">
         <title>NY State Info</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
     </head>
     <body>
-        <a id="logo" href="./index.html">NY State Info</a>
+        <div id="logo_tipitop">
+            <a href="./index.html"><img id="logo" src="./Resources/NYStateInfo_logo.png" alt="'New York State' superimposed on a silhouette of the state; the website logo"></a>
+        </div>
         <nav>
             <a href="./index.html">Home</a>
-            <a href="./index.html">Capital</a>
-            <a href="./index.html">Fun Facts</a>
-            <a href="./index.html">About</a>
-            <a href="./index.html">Contact</a>
+            <a href="./albany_info.html">Albany</a>
+            <a href="./buffalo_info.html">Buffalo</a>
+            <a href="./nyc_info.html">NYC</a>
+            <a href="./contact.html">Contact</a>
+            <form role="search" action="https://www.bing.com/search?" target="_blank">
+                <label for="search">Search:</label>
+                <input placeholder="Search Bing" type="search" id="search" name="q">
+                <button>Go!</button>
+            </form>
         </nav>
-        <h1>New York State</h1>
-        <section>
-            <h2>Notoriety</h2>
-            <p>New York State is home to New York City. New York City is so well known, 
-                it is sometimes referred to as the cultural epicenter of the world. Highly referenced in film and music,
-                the most notable landmarks are Grand Central Terminal, the Statue of Liberty, the Wall Street Bull, 
-                the Love Statue, the Botanical Gardens and the Bronx Zoo. It is the fourth-most populous state and 
-                eighth-most densely populated, even though it is only the 27th largest U.S. State, as of 2023. 
-                New York City is the most populous city in the U.S.
+        <header>
+            <h1>New York State</h1>
+            <img src="./Resources/Flag_of_New_York.png" alt="One woman in blue holding a staff on the left and another woman in yellow holding a scale on the right of a crest superimposed on a blue background">
+            <br>
+            <cite>By State of New York - <a href="https://commons.wikimedia.org/w/index.php?curid=527599">Public Domain</a></cite>
+            <h2>Introduction</h2>
+            <p>New York State is home to New York City (one of the most recognized cities in the world).
+                The most notable locations for the state are Manhattan, the Catskills, the Finger Lakes, the Appalachian Mountains, and Niagra Falls.
+                It is the fourth-most populous state and the eighth-most densely populated, even though it is only the 27th largest U.S. State, as of 2023. 
+                <sup><a href="https://www.census.gov/quickfacts/geo/chart/ID/PST045222">1</a></sup>
+                New York is a power house, occupying some of the highest ranks in multiple categories from GDP to Education. 
+                It is home to two Ivy League institutions, Columbia University and Cornell University. It also has the largest universiy system in the U.S., the State University of New York.
+                <sup><a href="https://www.suny.edu/about/">2</a></sup>
+                It has one of the most extensive transportation systems in the country and has a strong sports history from Baseball to Basketball.
             </p>
-        </section>
-        <section>
+            <h3>Cities:</h3>
+            <ul>
+                <li><a href="./albany_info.html">Albany (Capital)</a></li>
+                <li><a href="./nyc_info.html">New York City</a></li>
+                <li><a href="./buffalo_info.html">Buffalo</a></li>
+            </ul>
+        </header>
+        <section class="mid_section">
             <h2>History</h2>
-            <p>New York State was once of the original Thirteen Colonies that formed the United States.
+            <p>New York State was one of the original Thirteen Colonies that formed the United States.
                 Initially it was inhabited by Native Americans for thousands of years. The Dutch established a multiethnic colony in 1621. 
                 After, it was initially seized by England from the Dutch in 1664, naming it the Province of New York. 
-                Many battles happend in New York during the American Revolution (approximately one third of the total battles).
+                Many battles happend on the soil of New York during the American Revolution (approximately one third of all battles).
+                <sup><a href="https://books.google.com/books?id=c5hky9f5PgoC&pg=PA27#v=onepage&q&f=false">3</a></sup>
             </p>
             <p>From the late 18th to the late 19th century, New York started to look as it does today. 
                 The Erie Canal lead to an economic boom by increasing the connectivity of various settlements. 
@@ -40,17 +63,46 @@
                 More than 12 million immigrants passed through Ellis Island between 1892 and 1954. 
                 More than 100 million Americans across the United States can trace their ancestry to these immigrants.
                 <br>
-                <em>https://www.nytimes.com/1998/05/27/nyregion/ellis-island-verdict-ruling-high-court-gives-new-jersey-most-ellis-island.html</em>
+                <a href="https://www.nytimes.com/1998/05/27/nyregion/ellis-island-verdict-ruling-high-court-gives-new-jersey-most-ellis-island.html">
+                    <em>May, 27, 1998, NYTimes, "Ellis Island Verdict Ruling High Court Gives New Jersey Most Ellis Island"</em>
+                </a>
             </aside>
-            <ul>
-                <p>Notable events that happended:</p>
-                <li>The United Nations was founded in 1945 after World War 2. In 1952 New York City became the headquarters for the United Nations.</li>
-                <li>February 26th 1993, terrorists detonated a truck bomb at the World Trade Center.</li>
-                <li>September 11th 2001, Al Qaeda attacked the World Trade Center by sending planes into the Twin Towers.</li>
-            </ul>
+            <p>New York was the most populous state in the U.S. from the 1810s until 1962. As of 2024, it is the nation's fourth-most populous state behind California, Texas, and Florida. 
+                It is still the leading recipient of migrants from around the globe and it has a pro-sanctuary city.
+            </p>
+            <p>As the fifth state to do so, New York legalized same-sex marriage on July 24, 2011 with NYC becoming a safe-haven for the LGBTQ+ community.
+                <sup><a href="https://www.nytimes.com/2011/06/25/nyregion/gay-marriage-approved-by-new-york-senate.html">4</a></sup>
+            </p>
         </section>
+        <section class="mid_section">
+            <h2>Agriculture and Geography</h2>
+            <img src="./Resources/Niagra_Falls.jpg" alt="Water casscading down a cravas under a bridge surrounded by trees">
+            <br>
+            <cite>Patrick Donovan/Getty Images</cite>
+            <p>New York has four seasons with a generally humid climate. 
+                Beyond the cities, New York has many meadows, forests, rivers, mountaints and lakes. There are 22 national parks, and 27 natural landmarks.
+            </p>
+            <p>New York is the nation's third-largest grape producing state, and third-largest wine producer by volume, behind California and Washington.
+                New York also ranks as one of the top for agricultural produce such as maple syrup, apples, cherries and cabbage. 
+                In fact, New York is the largest producers of cabbage in the United states.
+                <sup><a href="https://www.osc.ny.gov/files/reports/special-topics/pdf/agriculture-report-2019.pdf">5</a></sup>
+            </p>
+        </section>
+        <section class="last_section">
+            <h3>Ending Remarks</h3>
+            <p>New York is a special place with something for everyone, from big cities to big parks. It is a strong contender for "Places to Visit".</p>
+        </section>
+        <footer>
+            <div id="footer_links">
+                <a href="./albany_info.html">Albany</a>
+                <a href="./buffalo_info.html">Buffalo</a>
+                <a href="./nyc_info.html">NYC</a>
+                <a href="./contact.html">Contact</a>
+            </div>
+            <div id="footer_copyright_logo">
+                <a href="./index.html"><img id="footer_logo" src="./Resources/NYStateInfo_logo.png" alt="'New York State' superimposed on a silhouette of the state; the website logo"></a>
+                <p>&copy; Pauline Lewis NY, NY 2024</p>
+            </div>
+        </footer>
     </body>
-    <footer>
-        <p>&copy; Pauline Lewis NY, NY 2024</p>
-    </footer>
 </html>
