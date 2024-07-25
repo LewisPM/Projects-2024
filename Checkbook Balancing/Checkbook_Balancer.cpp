@@ -39,16 +39,29 @@ class Money {
         Money(long dollars, int cents);
         Money(long dollars);
         Money();
+
         double getValue();
+
+        friend Money operator+(const Money& amount1, const Money& amount2);
+        friend Money operator-(const Money& amount1, const Money& amount2);
+        friend Money operator-(const Money& amount);
+        friend bool operator==(const Money& amount1, const Money& amount2);
+        friend bool operator<(const Money& amount1, const Money& amount2);
+        friend istream& operator >>(istream& ins, Money& amount);
+        friend ostream& operator <<(ostream& outs, const Money& amount);
 };
 class Check {
-    public:
+    private:
         int checkNum;
-        double amount;
+        Money amount;
         bool cashed;
-        Check(int checkNum, double amount, bool cashed);
-        double getAmt() const { return amount; }
+    public:
+        Check(int checkNum, Money amount, bool cashed);
+
+        Money getAmt() const { return amount; }
         int getNum() const { return checkNum; }
+        bool getCashedStatus() const { return this->cashed; }
+
 };
 
 //Functions
@@ -61,56 +74,114 @@ int main() {
     //checks.push_back(checkOne);
     //checks.push_back(checkOne);
     
-    bool addAnotherCheck;
-    cout<<"Adding a check? (1 for yes, 0 for no): ";
+    int addAnotherCheck;
+    cout<<"Adding a check? (1 for yes): ";
     cin>>addAnotherCheck;
-    while (addAnotherCheck == true) {
-        Check temp = getCheck();
-        if (temp.getNum() >= 1) {
-            checks.push_back(temp);
+    if (addAnotherCheck != 1) {
+        cout<<"No longer entering checks..."<<endl;
+    } else {
+        while (addAnotherCheck == 1) {
+            Check temp = getCheck();
+            if (temp.getNum() >= 1 && temp.getAmt().getValue() > 0.01) {
+                checks.push_back(temp);
+            }
+            cout<<"Adding another check? (1 for yes): ";
+            cin>>addAnotherCheck;
         }
-        cout<<"Adding another check? (1 for yes, 0 for no): ";
-        cin>>addAnotherCheck;
     }
 
     for (Check i : checks) {
-        cout<<"Check No. "<<i.getNum()<<": "<<i.getAmt()<<endl;
+        cout<<"Check No. "<<i.getNum()<<": "<<i.getAmt().getValue()<<endl;
     }
-    
-    
+
     return 0;
 }
 
-//Methods
-double Money::getValue() {
-    return total_in_cents / 100.0;
-}
-
+//MONEY - Constructors
 Money::Money(long dollars, int cents){
-    if (dollars < 0 || cents < 0) {
+    try {
+        if (dollars < 0 || cents < 0) {
+            throw(dollars);
+        } else {
+            total_in_cents = (dollars * 100) + cents;
+        }
+    } catch (long dollars) {
         cout<<"Dollars & cents values should be greater than or equal to 0."<<endl;
-        exit(1);
     }
-    total_in_cents = (dollars * 100) + cents;
 }
 
 Money::Money(long dollars){
-    if (dollars < 0) {
+    try {
+        if (dollars < 0) {
+            throw(dollars);
+        } else {
+            total_in_cents = dollars * 100;
+        }
+    } catch (long dollars) {
         cout<<"Dollars value should be greater than or equal to 0."<<endl;
-        exit(1);
     }
-    total_in_cents = (dollars * 100);
 }
 
 Money::Money(){
     total_in_cents = 0;
 }
 
-Check::Check(int checkNum, double amount, bool cashed){
+//MONEY - Methods
+double Money::getValue() {
+    return total_in_cents / 100.0;
+}
+
+//MONEY - operator overloads
+Money operator+(const Money& amount1, const Money& amount2) {
+    Money temp;
+    temp.total_in_cents = amount1.total_in_cents + amount2.total_in_cents;
+    return temp;
+}
+
+Money operator-(const Money& amount1, const Money& amount2){
+    Money temp;
+    temp.total_in_cents = amount1.total_in_cents - amount2.total_in_cents;
+    return temp;
+}
+
+Money operator-(const Money& amount){
+    Money temp;
+    temp.total_in_cents = amount.total_in_cents * -1;
+    return temp;
+}
+
+bool operator==(const Money& amount1, const Money& amount2){
+    if (amount1.total_in_cents == amount2.total_in_cents){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator<(const Money& amount1, const Money& amount2){
+    if (amount1.total_in_cents < amount2.total_in_cents){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+istream& operator >>(istream& ins, Money& amount){
+    //TO DO! FIGURE OUT AND COMPLETE ISTREAM - MONEY CLASS PG 632 & PG 657
+    return ins;
+}
+
+ostream& operator <<(ostream& outs, const Money& amount){
+    //TO DO! FIGURE OUT AND COMPLETE ISTREAM - MONEY CLASS PG 632 & PG 657
+    return outs;
+}
+
+//CHECK - Constructors
+Check::Check(int checkNum, Money amount, bool cashed){
     try {
         if (checkNum < 1) {
             throw(checkNum);
-        } else if (amount < 1){
+        } else if (amount.getValue() < 0.01){
             throw(amount);
         } else {
             this->checkNum = checkNum;
@@ -121,11 +192,15 @@ Check::Check(int checkNum, double amount, bool cashed){
     catch (int checkNum) {
         cout<<"Check number must be greater than 0."<<endl;
     }
-    catch (double amount) {
+    catch (Money amount) {
         cout<<"Check amount must be greater than 0."<<endl;
     }
 }
 
+//Check - Methods
+
+
+//Functions
 Check getCheck(){
     int checkNumber;
     double checkAmount;
@@ -133,12 +208,17 @@ Check getCheck(){
 
     cout<<"Check Number: ";
     cin>>checkNumber;
+
     cout<<"Check Amount: ";
     cin>>checkAmount;
+    long dollar = checkAmount/1;
+    int cents = checkAmount - dollar;
+    Money amount(dollar, cents);
+    
     cout<<"Check Cashed? (1 for yes, 0 for no): ";
     cin>>checkCashed;
     cout<<endl;
 
-    Check temp(checkNumber, checkAmount, checkCashed);
+    Check temp(checkNumber, amount, checkCashed);
     return temp;
 }
