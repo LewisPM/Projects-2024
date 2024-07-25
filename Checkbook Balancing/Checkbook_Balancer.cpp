@@ -28,6 +28,7 @@
         *. display the checks sorted from low-high*/
 
 #include <iostream>
+#include <vector>
 using namespace std;
 
 //Classes
@@ -41,21 +42,42 @@ class Money {
         double getValue();
 };
 class Check {
-    private:
-        int checkNum;
-        Money amt;
-        bool cashed;
     public:
-        Check(int checkNum, int amount, bool cashed);
-        Money getAmt() const { return amt; }
+        int checkNum;
+        double amount;
+        bool cashed;
+        Check(int checkNum, double amount, bool cashed);
+        double getAmt() const { return amount; }
+        int getNum() const { return checkNum; }
 };
+
+//Functions
+Check getCheck();
 
 //Main
 int main() {
-    //Check zero = Check(0, 1, 0); 
-    //cout<<"Check zero: "<<zero.getAmt().getValue()<<endl;
-    Check one = Check(1, 1, 0);
-    cout<<"Check one: "<<one.getAmt().getValue()<<endl;
+    vector <Check> checks;
+    //Check checkOne(9, 5, 0), checkTwo(10, 7, 0);
+    //checks.push_back(checkOne);
+    //checks.push_back(checkOne);
+    
+    bool addAnotherCheck;
+    cout<<"Adding a check? (1 for yes, 0 for no): ";
+    cin>>addAnotherCheck;
+    while (addAnotherCheck == true) {
+        Check temp = getCheck();
+        if (temp.getNum() >= 1) {
+            checks.push_back(temp);
+        }
+        cout<<"Adding another check? (1 for yes, 0 for no): ";
+        cin>>addAnotherCheck;
+    }
+
+    for (Check i : checks) {
+        cout<<"Check No. "<<i.getNum()<<": "<<i.getAmt()<<endl;
+    }
+    
+    
     return 0;
 }
 
@@ -84,12 +106,39 @@ Money::Money(){
     total_in_cents = 0;
 }
 
-Check::Check(int checkNum, int amount, bool cashed){
-    if (checkNum < 1) {
-        cout<<"Check number should be greater than 0."<<endl;
-        exit(1);
+Check::Check(int checkNum, double amount, bool cashed){
+    try {
+        if (checkNum < 1) {
+            throw(checkNum);
+        } else if (amount < 1){
+            throw(amount);
+        } else {
+            this->checkNum = checkNum;
+            this->amount = amount;
+            this->cashed = cashed;
+        }
     }
-    checkNum = checkNum;
-    amt = Money(amount);
-    cashed = cashed;
+    catch (int checkNum) {
+        cout<<"Check number must be greater than 0."<<endl;
+    }
+    catch (double amount) {
+        cout<<"Check amount must be greater than 0."<<endl;
+    }
+}
+
+Check getCheck(){
+    int checkNumber;
+    double checkAmount;
+    bool checkCashed;
+
+    cout<<"Check Number: ";
+    cin>>checkNumber;
+    cout<<"Check Amount: ";
+    cin>>checkAmount;
+    cout<<"Check Cashed? (1 for yes, 0 for no): ";
+    cin>>checkCashed;
+    cout<<endl;
+
+    Check temp(checkNumber, checkAmount, checkCashed);
+    return temp;
 }
