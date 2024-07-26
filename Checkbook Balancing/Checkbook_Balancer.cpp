@@ -21,7 +21,7 @@
     1. the total of the checks cashed
     2. the total deposits
     3. what the new balance should be
-    4. how much the figure differes from what the bank says
+    4. how much the figure differs from what the bank says
     5. two lists of checks:
         a. the ones cashed since the last balance
         b. the ones not cashed 
@@ -54,46 +54,79 @@ class Check {
     private:
         int checkNum;
         Money amount;
+        //Cashed here is understood as: 
+        //Cashed = True when Checks the user has written out to others have been deducted from their account balance
+        //Cashed = False when Checks the user has written have not yet been deducted from their account balance
         bool cashed;
     public:
         Check(int checkNum, Money amount, bool cashed);
 
         Money getAmt() const { return amount; }
         int getNum() const { return checkNum; }
-        bool getCashedStatus() const { return this->cashed; }
+        bool cashedStatus() const { return cashed; }
+
+        //TO DO! If needed add mutators
 
 };
 
 //Functions
-Check getCheck();
+Check _getCheck();
+void addChecks(vector <Check>& checks);
+void getDeposits(vector <Money>& deposits);
+Money _doubleToMoney(double value);
 
 //Main
 int main() {
-    vector <Check> checks;
-    //Check checkOne(9, 5, 0), checkTwo(10, 7, 0);
-    //checks.push_back(checkOne);
-    //checks.push_back(checkOne);
-    
-    int addAnotherCheck;
-    cout<<"Adding a check? (1 for yes): ";
-    cin>>addAnotherCheck;
-    if (addAnotherCheck != 1) {
-        cout<<"No longer entering checks..."<<endl;
-    } else {
-        while (addAnotherCheck == 1) {
-            Check temp = getCheck();
-            if (temp.getNum() >= 1 && temp.getAmt().getValue() > 0.01) {
-                checks.push_back(temp);
-            }
-            cout<<"Adding another check? (1 for yes): ";
-            cin>>addAnotherCheck;
-        }
-    }
+    vector <Check> checks, cashed, notCashed;
+    vector <Money> deposits;
+    double cashedSum = 0, depositSum = 0;
+
+    //TO DO! Change the entry for checks such that you are not asked each time if you would like to add, just enter -1 for the check number to finish.
+    addChecks(checks);
+    getDeposits(deposits);
+
+    cout<<"Please enter the old balance: ";
+    double oldBalance;
+    cin>>oldBalance;
+
+    cout<<"Please enter the new balance: ";
+    double estNewBalance;
+    cin>>estNewBalance;
+
+    cout<<"Balancing checks..."<<endl<<endl;
 
     for (Check i : checks) {
-        cout<<"Check No. "<<i.getNum()<<": "<<i.getAmt().getValue()<<endl;
+        if (i.cashedStatus() == true) {
+            cashed.push_back(i);
+            cashedSum += i.getAmt().getValue();
+        } else {
+            notCashed.push_back(i);
+        }
+        //cout<<"Check No. "<<i.getNum()<<": "<<i.getAmt().getValue()<<endl;
+    }
+    cout<<"Old balance: $"<<oldBalance<<endl;
+    cout<<"Total of checks cashed: $"<<cashedSum<<endl;
+
+    for (Money j : deposits) {
+        depositSum += j.getValue();
+    }
+    cout<<"Total deposits: $"<<depositSum<<endl;
+
+    double newBalance = depositSum + oldBalance - cashedSum;
+    cout<<"New Balance: $"<<newBalance<<endl<<endl;
+    cout<<"Difference from provided new balance and calculated: $"<<abs(estNewBalance - newBalance)<<endl<<endl;
+
+    cout<<"Cashed checks: "<<endl;
+    for (Check c : cashed) {
+        cout<<"Check No. "<<c.getNum()<<": $"<<c.getAmt().getValue()<<endl;
     }
 
+    cout<<endl;
+
+    cout<<"Uncashed checks: "<<endl;
+    for (Check nc : notCashed) {
+        cout<<"Check No. "<<nc.getNum()<<": $"<<nc.getAmt().getValue()<<endl;
+    }
     return 0;
 }
 
@@ -128,7 +161,7 @@ Money::Money(){
 
 //MONEY - Methods
 double Money::getValue() {
-    return total_in_cents / 100.0;
+    return total_in_cents * 0.01;
 }
 
 //MONEY - operator overloads
@@ -166,6 +199,7 @@ bool operator<(const Money& amount1, const Money& amount2){
     }
 }
 
+/*
 istream& operator >>(istream& ins, Money& amount){
     //TO DO! FIGURE OUT AND COMPLETE ISTREAM - MONEY CLASS PG 632 & PG 657
     return ins;
@@ -175,6 +209,7 @@ ostream& operator <<(ostream& outs, const Money& amount){
     //TO DO! FIGURE OUT AND COMPLETE ISTREAM - MONEY CLASS PG 632 & PG 657
     return outs;
 }
+*/
 
 //CHECK - Constructors
 Check::Check(int checkNum, Money amount, bool cashed){
@@ -201,24 +236,56 @@ Check::Check(int checkNum, Money amount, bool cashed){
 
 
 //Functions
-Check getCheck(){
+Check _getCheck(){
     int checkNumber;
     double checkAmount;
     bool checkCashed;
 
     cout<<"Check Number: ";
     cin>>checkNumber;
-
     cout<<"Check Amount: ";
     cin>>checkAmount;
-    long dollar = checkAmount/1;
-    int cents = checkAmount - dollar;
-    Money amount(dollar, cents);
-    
+    Money amount = _doubleToMoney(checkAmount);
     cout<<"Check Cashed? (1 for yes, 0 for no): ";
     cin>>checkCashed;
     cout<<endl;
 
     Check temp(checkNumber, amount, checkCashed);
     return temp;
+}
+
+void addChecks(vector <Check>& checks){   
+    int addAnotherCheck;
+    cout<<"Adding a check? (1 for yes): ";
+    cin>>addAnotherCheck;
+    while (addAnotherCheck == 1) {
+        Check temp = _getCheck();
+        if (temp.getNum() >= 1 && temp.getAmt().getValue() > 0.01) {
+            checks.push_back(temp);
+        }
+        cout<<"Adding another check? (1 for yes): ";
+        cin>>addAnotherCheck;
+    }
+    cout<<"No longer entering checks..."<<endl;
+    cout<<endl;
+}
+
+void getDeposits(vector <Money>& deposits){
+    double deposit;
+    cout<<"Please enter your deposits (enter -1 to finish): "<<endl;
+    cin>>deposit;
+    while (deposit != -1) {
+        Money temp (deposit);
+        deposits.push_back(temp);
+        cin>>deposit;
+    }
+}
+
+Money _doubleToMoney(double value){
+    int all_cents = value * 100;
+    long dollar = all_cents/100;
+    int cents = all_cents - (dollar * 100);
+
+    Money amount(dollar, cents);
+    return amount;
 }
