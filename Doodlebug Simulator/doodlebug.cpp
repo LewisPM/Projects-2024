@@ -31,23 +31,24 @@ struct world {
     char grid[MAX_GRID_SIZE][MAX_GRID_SIZE];
 };
 
+struct worldLocation {
+    int x = 0;
+    int y = 0;
+    int* loc;
+};
+
 class Organism {
     private:
-        char symbol = SPACE;
         int breedDays = 0;
     public:
         virtual void move(world& arr, int x, int y);
         virtual void breed(world& arr, int x, int y);
-        virtual int getSymbol() const {return symbol;}
         virtual int getBreedDays() const {return breedDays;}
-        virtual void incrementBreedDays() { breedDays++ };
-        virtual void resetBreedDays() { breedDays = 0 };
-
+        virtual void incrementBreedDays() { breedDays++; };
+        virtual void resetBreedDays() { breedDays = 0; };
 };
 
 class Ant : public Organism {
-    private:
-        char symbol = ANT;
     public:
         void move(world& arr, int x, int y);
         void breed(world& arr, int x, int y);
@@ -55,15 +56,14 @@ class Ant : public Organism {
 
 class Doodlebug : public Organism {
     private:
-        char symbol = DOODLEBUG;
         int daysSinceLastMeal = 0;
     public:
         void move(world& arr, int x, int y);
         void breed(world& arr, int x, int y);
         void starve(world& arr, int x, int y);
         int getDaysSinceLastMeal() const {return daysSinceLastMeal;}
-        void incrementDaysSinceLastMeal() { daysSinceLastMeal++ };
-        void resetDaysSinceLastMeal() { daysSinceLastMeal = 0 };
+        void incrementDaysSinceLastMeal() { daysSinceLastMeal++; };
+        void resetDaysSinceLastMeal() { daysSinceLastMeal = 0; };
 };
 
 world generateWorld(int gridSize, int doodleCount, int antCount);
@@ -72,6 +72,12 @@ void simulate(world& arr);
 
 int main(){    
     srand(time(0));
+
+    vector <int> Test;
+    Test.push_back(1);
+    Test.push_back(7);
+    cout<<Test[1];
+
     world world = generateWorld(MAX_GRID_SIZE, DOODLE_COUNT, ANT_COUNT);
     printWorld(world);
     string runAgain;
@@ -81,9 +87,9 @@ int main(){
         printWorld(world);
         getline(cin, runAgain);
     }
+
     return 0;
 }
-
 
 void Ant::move(world& arr, int r, int c){
     int moveChoice = rand() % 3;
@@ -189,7 +195,7 @@ void Doodlebug::breed(world& arr, int r, int c){
 }
 
 void Doodlebug::starve(world& arr, int r, int c){
-    if (this->daysSinceLastMeal() == 3) {
+    if (this->getDaysSinceLastMeal() == 3) {
         //bugs dies
     }
 }
@@ -224,14 +230,14 @@ world generateWorld(int gridSize, int doodleCount, int antCount) {
 }
 
 void printWorld(world& arr){
-    cout<<endl<<"World Days: "<<arr.days<<endl;
+    cout<<endl<<"World Days: "<<arr.days<<endl<<endl;
     for (int r = 0; r < MAX_GRID_SIZE; r++){
         for (int c = 0; c < MAX_GRID_SIZE; c++){
             cout<<arr.grid[r][c];
         }
         cout<<endl;
     }
-    cout<<"Press ENTER to continue simulation...";
+    cout<<endl<<"Press ENTER to continue simulation...";
 };
 
 void simulate(world& arr){
