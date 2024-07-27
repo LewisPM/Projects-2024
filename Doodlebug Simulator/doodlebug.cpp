@@ -12,9 +12,9 @@ const int DOODLE_COUNT = 5;
 const char ANT = 'o';
 const int ANT_COUNT = 100;
 const char SPACE = '-';
-
-char* generateWorld(int gridSize, int doodleCount, int antCount);
-
+struct twoDArray {
+    char grid[MAX_GRID_SIZE][MAX_GRID_SIZE];
+};
 class Organism {
     private:
         char symbol = SPACE;
@@ -42,27 +42,62 @@ class Doodlebug : public Organism {
         void starve(int& grid);
 };
 
+twoDArray generateWorld(int gridSize, int doodleCount, int antCount);
+void printWorld(twoDArray& arr);
+
 int main(){
     int days = 0;
+    
+    twoDArray world = generateWorld(MAX_GRID_SIZE, DOODLE_COUNT, ANT_COUNT);
+    printWorld(world);
+
     return 0;
 }
 
-char* generateWorld(int gridSize, int doodleCount, int antCount) {
-    char* arr = new char[gridSize];
-    char secondDimension[gridSize] = {SPACE};
+twoDArray generateWorld(int gridSize, int doodleCount, int antCount) {
 
-    srand(time(0));
-    int randoNum = rand() % 19;
-    int x = doodleCount;
-    int y = antCount;
-
-    for (int r = 0; r < gridSize; r++) {
-        for (int c = 0; r < gridSize; r++) {
-            //cout<<*arr[r][c].getSymbol();
-            //cout<<arr[r][c];
+    twoDArray arr;
+    for (int i = 0; i < gridSize; i++){
+        for (int i2 = 0; i2 < gridSize; i2++){
+            arr.grid[i][i2] = SPACE;
         }
-        
-        cout<<endl;
+    }
+
+    int spaceCount = gridSize * gridSize;
+    int goal = spaceCount - (doodleCount + antCount);
+    int x = 0, y = 0;
+    srand(time(0));
+
+    while (spaceCount > goal){
+        cout<<"spaceCount: "<<spaceCount<<endl;
+        cout<<"goal: "<<spaceCount - (doodleCount + antCount)<<endl;
+        while (x < doodleCount) {
+            int randoNumX = rand() % (gridSize - 1);
+            int randoNumY = rand() % (gridSize - 1);
+            if (arr.grid[randoNumX][randoNumY] == SPACE) {
+                arr.grid[randoNumX][randoNumY] = DOODLEBUG;
+                x++;
+                spaceCount--;
+            }
+        }
+        while (y < antCount) {
+            int randoNumX = rand() % (gridSize - 1);
+            int randoNumY = rand() % (gridSize - 1);
+            if (arr.grid[randoNumX][randoNumY] == SPACE) {
+                arr.grid[randoNumX][randoNumY] = ANT;
+                y++;
+                spaceCount--;
+            }
+        }
     }
     return arr;
 }
+
+void printWorld(twoDArray& arr){
+    for (int r = 0; r < MAX_GRID_SIZE; r++){
+        for (int c = 0; c < MAX_GRID_SIZE; c++){
+            cout<<arr.grid[r][c];
+        }
+        cout<<endl;
+    }
+};
