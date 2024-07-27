@@ -20,6 +20,12 @@ const int ANT_BREED_DAYS = 3;
 
 const int DOODLE_STARVE_DAYS = 3;
 
+const int UP = 0;
+const int RIGHT = 1;
+const int DOWN = 2;
+const int LEFT = 3;
+
+
 struct world {
     int days = 0;
     char grid[MAX_GRID_SIZE][MAX_GRID_SIZE];
@@ -28,20 +34,23 @@ struct world {
 class Organism {
     private:
         char symbol = SPACE;
-        int ageInDays = 0;
+        int breedDays = 0;
     public:
-        virtual void move(world& grid);
-        virtual void breed(world& grid);
+        virtual void move(world& arr, int x, int y);
+        virtual void breed(world& arr, int x, int y);
         virtual int getSymbol() const {return symbol;}
-        virtual int getAge() const {return ageInDays;}
+        virtual int getBreedDays() const {return breedDays;}
+        virtual void incrementBreedDays() { breedDays++ };
+        virtual void resetBreedDays() { breedDays = 0 };
+
 };
 
 class Ant : public Organism {
     private:
         char symbol = ANT;
     public:
-        void move(world& grid);
-        void breed(world& grid);
+        void move(world& arr, int x, int y);
+        void breed(world& arr, int x, int y);
 };
 
 class Doodlebug : public Organism {
@@ -49,9 +58,12 @@ class Doodlebug : public Organism {
         char symbol = DOODLEBUG;
         int daysSinceLastMeal = 0;
     public:
-        void move(world& grid);
-        void breed(world& grid);
-        void starve(world& grid);
+        void move(world& arr, int x, int y);
+        void breed(world& arr, int x, int y);
+        void starve(world& arr, int x, int y);
+        int getDaysSinceLastMeal() const {return daysSinceLastMeal;}
+        void incrementDaysSinceLastMeal() { daysSinceLastMeal++ };
+        void resetDaysSinceLastMeal() { daysSinceLastMeal = 0 };
 };
 
 world generateWorld(int gridSize, int doodleCount, int antCount);
@@ -70,6 +82,116 @@ int main(){
         getline(cin, runAgain);
     }
     return 0;
+}
+
+
+void Ant::move(world& arr, int r, int c){
+    int moveChoice = rand() % 3;
+    if (moveChoice == UP) {
+        if (((r - 1) >= 0) && (arr.grid[r - 1][c] == SPACE)){
+            //move ant up
+        }
+    } else if (moveChoice == LEFT) {
+        if (((c - 1) >= 0) && (arr.grid[r][c - 1] == SPACE)){
+            //move ant left
+        }
+    } else if (moveChoice == DOWN) {
+        if (((r + 1) < MAX_GRID_SIZE) && (arr.grid[r][c + 1] == SPACE)){
+            //move ant down
+        }
+    } else if (moveChoice == RIGHT) {
+        if (((c + 1) < MAX_GRID_SIZE) && (arr.grid[r][c + 1] == SPACE)){
+            //move ant right
+        }
+    }
+    this->incrementBreedDays();
+}
+
+void Ant::breed(world& arr, int r, int c){
+    if (this->getBreedDays() >= 3) {
+        if (((r - 1) >= 0) && (arr.grid[r - 1][c] == SPACE)){
+            //baby ant up
+            this->resetBreedDays();
+        } else if (((c - 1) >= 0) && (arr.grid[r][c - 1] == SPACE)){
+            //baby ant left
+            this->resetBreedDays();
+        } else if (((r + 1) < MAX_GRID_SIZE) && (arr.grid[r][c + 1] == SPACE)){
+            //baby ant down
+            this->resetBreedDays();
+        } else if (((c + 1) < MAX_GRID_SIZE) && (arr.grid[r][c + 1] == SPACE)){
+            //baby ant right
+            this->resetBreedDays();
+        } else {
+            this->incrementBreedDays();
+        }
+    }
+}
+
+void Doodlebug::move(world& arr, int r, int c){
+    //Priority One - Eat Ant
+    if (arr.grid[r - 1][c] == ANT){
+        //move up and eat ant
+        this->resetDaysSinceLastMeal();
+    } else if (arr.grid[r][c - 1] == ANT){
+        //move left and eat ant
+        this->resetDaysSinceLastMeal();
+    } else if (arr.grid[r][c + 1] == ANT){
+        //move down and eat ant
+        this->resetDaysSinceLastMeal();
+    } else if (arr.grid[r][c + 1] == ANT){
+        //move right and eat ant
+        this->resetDaysSinceLastMeal();
+    } else {
+        int moveChoice = rand() % 3;
+        if (moveChoice == UP) {
+            if (((r - 1) >= 0) && (arr.grid[r - 1][c] == SPACE)){
+                //move bug up
+                this->incrementDaysSinceLastMeal();
+            }
+        } else if (moveChoice == LEFT) {
+            if (((c - 1) >= 0) && (arr.grid[r][c - 1] == SPACE)){
+                //move bug left
+                this->incrementDaysSinceLastMeal();
+            }
+        } else if (moveChoice == DOWN) {
+            if (((r + 1) < MAX_GRID_SIZE) && (arr.grid[r][c + 1] == SPACE)){
+                //move bug down
+                this->incrementDaysSinceLastMeal();
+            }
+        } else if (moveChoice == RIGHT) {
+            if (((c + 1) < MAX_GRID_SIZE) && (arr.grid[r][c + 1] == SPACE)){
+                //move bug right
+                this->incrementDaysSinceLastMeal();
+            }
+        }
+    }
+    this->incrementBreedDays();
+}
+
+void Doodlebug::breed(world& arr, int r, int c){
+    if (this->getBreedDays() >= 8) {
+        if (((r - 1) >= 0) && (arr.grid[r - 1][c] == SPACE)){
+            //baby bug up
+            this->resetBreedDays();
+        } else if (((c - 1) >= 0) && (arr.grid[r][c - 1] == SPACE)){
+            //baby bug left
+            this->resetBreedDays();
+        } else if (((r + 1) < MAX_GRID_SIZE) && (arr.grid[r][c + 1] == SPACE)){
+            //baby bug down
+            this->resetBreedDays();
+        } else if (((c + 1) < MAX_GRID_SIZE) && (arr.grid[r][c + 1] == SPACE)){
+            //baby bug right
+            this->resetBreedDays();
+        } else {
+            this->incrementBreedDays();
+        }
+    }
+}
+
+void Doodlebug::starve(world& arr, int r, int c){
+    if (this->daysSinceLastMeal() == 3) {
+        //bugs dies
+    }
 }
 
 world generateWorld(int gridSize, int doodleCount, int antCount) {
@@ -113,12 +235,12 @@ void printWorld(world& arr){
 };
 
 void simulate(world& arr){
-    for (int x = 0; x < MAX_GRID_SIZE; x++){
-        for (int y = 0; y < MAX_GRID_SIZE; y++){
-            if (arr.grid[x][y] == ANT){
+    for (int r = 0; r < MAX_GRID_SIZE; r++){
+        for (int c = 0; c < MAX_GRID_SIZE; c++){
+            if (arr.grid[r][c] == ANT){
                 //do ant things
             }
-            if (arr.grid[x][y] == DOODLEBUG){
+            if (arr.grid[r][c] == DOODLEBUG){
                 //do doodlebug things
             }
         }
