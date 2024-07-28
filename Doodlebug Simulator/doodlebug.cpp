@@ -417,30 +417,19 @@ void printWorld(world& arr){
 };
 
 void simulate(world& arr, vector <Organism*>& doodleLog, vector <Organism*>& antLog, vector <Organism*>& deadBugLog){
-    for (int r = 0; r < MAX_GRID_SIZE; r++){
-        for (int c = 0; c < MAX_GRID_SIZE; c++){
-            if (arr.grid[r][c] == ANT){
-                for (auto i: antLog){
-                    int antX = i->getLocation().x;
-                    int antY = i->getLocation().y;
-                    if ((antX == r) && (antY == c)){
-                        i->move(arr, antX, antY, antLog, deadBugLog);
-                        i->breed(arr, antX, antY);
-                    }
-                }
-            }
-            if (arr.grid[r][c] == DOODLEBUG){
-                for (auto i: doodleLog){
-                    int doodleX = i->getLocation().x;
-                    int doodleY = i->getLocation().y;
-                    if ((doodleX == r) && (doodleY == c)){
-                        i->move(arr, doodleX, doodleY, antLog, deadBugLog);
-                        i->breed(arr, doodleX, doodleY);
-                        i->starve(arr, doodleX, doodleY);
-                    }
-                }
-            }
-        }
+    //Doodles go first
+    for (auto i: doodleLog) {
+        int doodleX = i->getLocation().x;
+        int doodleY = i->getLocation().y;
+        i->move(arr, doodleX, doodleY, antLog, deadBugLog);
+        i->breed(arr, doodleX, doodleY);
+        i->starve(arr, doodleX, doodleY);
+    }
+    for (auto i: antLog) {
+        int antX = i->getLocation().x;
+        int antY = i->getLocation().y;
+        i->move(arr, antX, antY, antLog, deadBugLog);
+        i->breed(arr, antX, antY);
     }
     arr.days++;
 }
