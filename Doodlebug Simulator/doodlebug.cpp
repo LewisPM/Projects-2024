@@ -40,10 +40,17 @@ class Organism {
     private:
         int breedDays = 0;
         worldLocation location;
-        Organism* address = nullptr;
+        Organism* address;
 
     public:
-        virtual void move(world& arr, int x, int y){};
+        //To figure out, ask Professors or TAs - in setting up virtuals all parameters needed to match in pointer transition, is there another way?
+        //How would you solve this problem? Where would you simplify?
+
+        //REQUIRED BIG 3
+        virtual ~Organism() { delete address; }
+        virtual Organism& operator=(const Organism& rhs) { return *address = *rhs.address; }
+
+        virtual void move(world& arr, int x, int y, vector <Organism*> antLog){};
         virtual void breed(world& arr, int x, int y){};
         virtual int getBreedDays() const { return breedDays; }
         virtual void incrementBreedDays() { breedDays++; }
@@ -55,11 +62,13 @@ class Organism {
         }
         virtual Organism* getAddress() { return address; }
         virtual void setAddress(Organism* newAddress) { address = newAddress; }
+        virtual void starve(world& arr, int x, int y){};
+
 };
 
 class Ant : public Organism {
     public:
-        void move(world& arr, int x, int y);
+        void move(world& arr, int x, int y, vector <Organism*> antLog);
         void breed(world& arr, int x, int y);
 };
 
@@ -67,7 +76,7 @@ class Doodlebug : public Organism {
     private:
         int daysSinceLastMeal = 0;
     public:
-        void move(world& arr, int x, int y);
+        void move(world& arr, int x, int y, vector <Organism*> antLog);
         void breed(world& arr, int x, int y);
         void starve(world& arr, int x, int y);
         int getDaysSinceLastMeal() const {return daysSinceLastMeal;}
@@ -84,6 +93,7 @@ int main(){
 
     vector <Organism*> doodlebugLog;
     vector <Organism*> antLog;
+    vector <Organism*> deadBugLog;
 
     //WORKS
     /*
@@ -106,23 +116,64 @@ int main(){
     }
     */
 
-    printWorld(world);
+   /*
+    for (auto i: antLog){
+        cout<<i<<": ";
+        cout<<"["<<i->getLocation().x<<", "<<i->getLocation().y<<"]"<<endl;
+    }
+    */
+   for (auto i: antLog){
+        cout<<i<<": ";
+        cout<<"["<<i->getLocation().x<<", "<<i->getLocation().y<<"]"<<endl;
+    }
+    int iter = 0;
+    for (auto i: antLog){
+        if ((i->getLocation().x == 0)) {
+            cout<<"Deleting..."<<"["<<i->getLocation().x<<", "<<i->getLocation().y<<"]"<<endl;
+            Organism* temper = i;
+            antLog.erase(antLog.begin()+iter);
+            //delete i;
+            cout<<temper<<endl;
+            deadBugLog.push_back(temper);
+        }
+        iter++;
+    }
+    /*
+    for (auto i: antLog){
+        cout<<i<<": ";
+        cout<<"["<<i->getLocation().x<<", "<<i->getLocation().y<<"]"<<endl;
+    }*/
+   cout<<"DEAD BUGS: "<<endl;
+    for (auto i: deadBugLog){
+        cout<<i<<": ";
+        cout<<"["<<i->getLocation().x<<", "<<i->getLocation().y<<"]"<<endl;
+    }
+    deadBugLog.clear();
+    cout<<"DEAD BUGS AFTER FLUSH: "<<endl;
+    for (auto i: deadBugLog){
+        cout<<i<<": ";
+        cout<<"["<<i->getLocation().x<<", "<<i->getLocation().y<<"]"<<endl;
+    }
+
+    //printWorld(world);
     string runAgain;
     getline(cin, runAgain);
     while (runAgain == ""){
-        simulate(world, doodlebugLog, antLog);
-        printWorld(world);
-        
-        //WORKS
-        //antPtr->move(world, 0, 0);
-
+        /*
+        for (auto i: antLog){
+        cout<<i<<": ";
+        cout<<"["<<i->getLocation().x<<", "<<i->getLocation().y<<"]"<<endl;
+        }
+        */
+        //simulate(world, doodlebugLog, antLog);
+        //printWorld(world);
         getline(cin, runAgain);
     }
 
     return 0;
 }
 
-void Ant::move(world& arr, int r, int c){
+void Ant::move(world& arr, int r, int c, vector <Organism*> antLog){
     int moveChoice = rand() % 3;
     if (moveChoice == UP) {
         if (((r - 1) >= 0) && (arr.grid[r - 1][c] == SPACE)){
@@ -172,10 +223,25 @@ void Ant::breed(world& arr, int r, int c){
     }
 }
 
-void Doodlebug::move(world& arr, int r, int c){
+void Doodlebug::move(world& arr, int r, int c, vector <Organism*> antLog){
     //Priority One - Eat Ant
     if (arr.grid[r - 1][c] == ANT){
         //move up and eat ant
+        int iter = 0;
+        for (auto i: antLog){
+            int antX = i->getLocation().x;
+            int antY = i->getLocation().y;
+            if ((antX == r) && (antY == c)){
+                //"I am the ant you seek"
+                delete i;
+                i = nullptr;
+                antLog.erase(antLog.begin()+iter);
+            }
+            iter++;
+        }
+        this->setLocation(r-1, c);
+        arr.grid[r-1][c] = DOODLEBUG;
+        arr.grid[r][c] = SPACE;
         this->resetDaysSinceLastMeal();
     } else if (arr.grid[r][c - 1] == ANT){
         //move left and eat ant
@@ -190,22 +256,30 @@ void Doodlebug::move(world& arr, int r, int c){
         int moveChoice = rand() % 3;
         if (moveChoice == UP) {
             if (((r - 1) >= 0) && (arr.grid[r - 1][c] == SPACE)){
-                //move bug up
+                this->setLocation(r-1, c);
+                arr.grid[r-1][c] = DOODLEBUG;
+                arr.grid[r][c] = SPACE;
                 this->incrementDaysSinceLastMeal();
             }
         } else if (moveChoice == LEFT) {
             if (((c - 1) >= 0) && (arr.grid[r][c - 1] == SPACE)){
-                //move bug left
+                this->setLocation(r, c-1);
+                arr.grid[r][c-1] = DOODLEBUG;
+                arr.grid[r][c] = SPACE;
                 this->incrementDaysSinceLastMeal();
             }
         } else if (moveChoice == DOWN) {
             if (((r + 1) < MAX_GRID_SIZE) && (arr.grid[r][c + 1] == SPACE)){
-                //move bug down
+                this->setLocation(r+1, c);
+                arr.grid[r+1][c] = DOODLEBUG;
+                arr.grid[r][c] = SPACE; 
                 this->incrementDaysSinceLastMeal();
             }
         } else if (moveChoice == RIGHT) {
             if (((c + 1) < MAX_GRID_SIZE) && (arr.grid[r][c + 1] == SPACE)){
-                //move bug right
+                this->setLocation(r, c+1);
+                arr.grid[r][c+1] = DOODLEBUG;
+                arr.grid[r][c] = SPACE; 
                 this->incrementDaysSinceLastMeal();
             }
         }
@@ -254,10 +328,24 @@ world generateWorld(vector <Organism*>& doodleLog, vector <Organism*>& antLog) {
         int randoNumY = rand() % (MAX_GRID_SIZE - 1);
         if (arr.grid[randoNumX][randoNumY] == SPACE) {
             arr.grid[randoNumX][randoNumY] = DOODLEBUG;
+            
             Organism* tempDoodlePtr = new Doodlebug();
             tempDoodlePtr->setLocation(randoNumX, randoNumY);
             tempDoodlePtr->setAddress(tempDoodlePtr);
             doodleLog.push_back(tempDoodlePtr);
+            
+            /*Consider second version of implementation where
+            Organism call generates organism on the heap
+            then has the big 3 set-up for Organism* address;
+            1. Organism (): address (new Organism())
+            2. ~Organism() { delete address; }
+            3. Organism (const Organism& rhs) { *address = *rhs.address } (copy constructor)
+            4. Organism& operator=(const Organism& rhs) { *address = *rhs.address } (To make it possible for Organisms to equal other organisms)*/
+            /*
+            Doodlebug tempDoodle = Doodle(randoNumX, randoNumY);
+            Organism* tempDoodlePtr = tempDoodle.getAddress();
+            doodleLog.push_back(tempDoodlePtr);
+            */
             x++;
         }
     }
@@ -296,13 +384,22 @@ void simulate(world& arr, vector <Organism*>& doodleLog, vector <Organism*>& ant
                     int antY = i->getLocation().y;
                     if ((antX == r) && (antY == c)){
                         //"I am the ant you seek"
-                        i->move(arr, antX, antY);
+                        i->move(arr, antX, antY, antLog);
                         i->breed(arr, antX, antY);
                     }
                 }
             }
             if (arr.grid[r][c] == DOODLEBUG){
-                //do doodlebug things
+                for (auto i: doodleLog){
+                    int doodleX = i->getLocation().x;
+                    int doodleY = i->getLocation().y;
+                    if ((doodleX == r) && (doodleY == c)){
+                        //"I am the doodle you seek"
+                        i->move(arr, doodleX, doodleY, antLog);
+                        i->breed(arr, doodleX, doodleY);
+                        i->starve(arr, doodleX, doodleY);
+                    }
+                }
             }
         }
     }
