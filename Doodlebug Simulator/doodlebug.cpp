@@ -77,7 +77,7 @@ class Doodlebug : public Organism {
 
 world generateWorld(vector <Organism*>& doodleLog, vector <Organism*>& antLog);
 void printWorld(world& arr);
-void simulate(world& arr);
+void simulate(world& arr, vector <Organism*>& doodleLog, vector <Organism*>& antLog);
 
 int main(){    
     srand(time(0));
@@ -110,7 +110,7 @@ int main(){
     string runAgain;
     getline(cin, runAgain);
     while (runAgain == ""){
-        simulate(world);
+        simulate(world, doodlebugLog, antLog);
         printWorld(world);
         
         //WORKS
@@ -123,23 +123,30 @@ int main(){
 }
 
 void Ant::move(world& arr, int r, int c){
-    cout<<"Moving!"<<endl;
     int moveChoice = rand() % 3;
     if (moveChoice == UP) {
         if (((r - 1) >= 0) && (arr.grid[r - 1][c] == SPACE)){
-            //move ant up
+            this->setLocation(r-1, c);
+            arr.grid[r-1][c] = ANT;
+            arr.grid[r][c] = SPACE;            
         }
     } else if (moveChoice == LEFT) {
         if (((c - 1) >= 0) && (arr.grid[r][c - 1] == SPACE)){
-            //move ant left
+            this->setLocation(r, c-1);
+            arr.grid[r][c-1] = ANT;
+            arr.grid[r][c] = SPACE; 
         }
     } else if (moveChoice == DOWN) {
-        if (((r + 1) < MAX_GRID_SIZE) && (arr.grid[r][c + 1] == SPACE)){
-            //move ant down
+        if (((r + 1) < MAX_GRID_SIZE) && (arr.grid[r + 1][c] == SPACE)){
+            this->setLocation(r+1, c);
+            arr.grid[r+1][c] = ANT;
+            arr.grid[r][c] = SPACE; 
         }
     } else if (moveChoice == RIGHT) {
         if (((c + 1) < MAX_GRID_SIZE) && (arr.grid[r][c + 1] == SPACE)){
-            //move ant right
+            this->setLocation(r, c+1);
+            arr.grid[r][c+1] = ANT;
+            arr.grid[r][c] = SPACE; 
         }
     }
     this->incrementBreedDays();
@@ -280,15 +287,24 @@ void printWorld(world& arr){
     cout<<endl<<"Press ENTER to continue simulation...";
 };
 
-void simulate(world& arr){
+void simulate(world& arr, vector <Organism*>& doodleLog, vector <Organism*>& antLog){
     for (int r = 0; r < MAX_GRID_SIZE; r++){
         for (int c = 0; c < MAX_GRID_SIZE; c++){
             if (arr.grid[r][c] == ANT){
-                //do ant things
+                for (auto i: antLog){
+                    int antX = i->getLocation().x;
+                    int antY = i->getLocation().y;
+                    if ((antX == r) && (antY == c)){
+                        //"I am the ant you seek"
+                        i->move(arr, antX, antY);
+                        i->breed(arr, antX, antY);
+                    }
+                }
             }
             if (arr.grid[r][c] == DOODLEBUG){
                 //do doodlebug things
             }
         }
     }
+    arr.days++;
 }
