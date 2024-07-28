@@ -43,9 +43,9 @@ class Organism {
         Organism* address = nullptr;
 
     public:
-        virtual void move(world& arr, int x, int y) {};
+        virtual void move(world& arr, int x, int y){};
         virtual void breed(world& arr, int x, int y){};
-        virtual int getBreedDays() const {return breedDays;}
+        virtual int getBreedDays() const { return breedDays; }
         virtual void incrementBreedDays() { breedDays++; }
         virtual void resetBreedDays() { breedDays = 0; }
         virtual worldLocation getLocation() { return location; }
@@ -75,7 +75,7 @@ class Doodlebug : public Organism {
         void resetDaysSinceLastMeal() { daysSinceLastMeal = 0; };
 };
 
-world generateWorld(int gridSize, int doodleCount, int antCount);
+world generateWorld(vector <Organism*>& doodleLog, vector <Organism*>& antLog);
 void printWorld(world& arr);
 void simulate(world& arr);
 
@@ -94,10 +94,18 @@ int main(){
     Organism*  antPtr = new Ant();
     antLog.push_back(antPtr);
     cout<<antLog[0]<<endl;
-
     */
 
-    world world = generateWorld(MAX_GRID_SIZE, DOODLE_COUNT, ANT_COUNT);
+    world world = generateWorld(doodlebugLog, antLog);
+
+    //WORKS
+    /*
+    for (auto i: doodlebugLog){
+        cout<<i<<": ";
+        cout<<"["<<i->getLocation().x<<", "<<i->getLocation().y<<"]"<<endl;
+    }
+    */
+
     printWorld(world);
     string runAgain;
     getline(cin, runAgain);
@@ -224,29 +232,37 @@ void Doodlebug::starve(world& arr, int r, int c){
     }
 }
 
-world generateWorld(int gridSize, int doodleCount, int antCount) {
+world generateWorld(vector <Organism*>& doodleLog, vector <Organism*>& antLog) {
     world arr;
-    for (int i = 0; i < gridSize; i++){
-        for (int i2 = 0; i2 < gridSize; i2++){
+    for (int i = 0; i < MAX_GRID_SIZE; i++){
+        for (int i2 = 0; i2 < MAX_GRID_SIZE; i2++){
             arr.grid[i][i2] = SPACE;
         }
     }
 
     int x = 0, y = 0;
 
-    while (x < doodleCount) {
-        int randoNumX = rand() % (gridSize - 1);
-        int randoNumY = rand() % (gridSize - 1);
+    while (x < DOODLE_COUNT) {
+        int randoNumX = rand() % (MAX_GRID_SIZE - 1);
+        int randoNumY = rand() % (MAX_GRID_SIZE - 1);
         if (arr.grid[randoNumX][randoNumY] == SPACE) {
             arr.grid[randoNumX][randoNumY] = DOODLEBUG;
+            Organism* tempDoodlePtr = new Doodlebug();
+            tempDoodlePtr->setLocation(randoNumX, randoNumY);
+            tempDoodlePtr->setAddress(tempDoodlePtr);
+            doodleLog.push_back(tempDoodlePtr);
             x++;
         }
     }
-    while (y < antCount) {
-        int randoNumX = rand() % (gridSize - 1);
-        int randoNumY = rand() % (gridSize - 1);
+    while (y < ANT_COUNT) {
+        int randoNumX = rand() % (MAX_GRID_SIZE - 1);
+        int randoNumY = rand() % (MAX_GRID_SIZE - 1);
         if (arr.grid[randoNumX][randoNumY] == SPACE) {
             arr.grid[randoNumX][randoNumY] = ANT;
+            Organism* tempAntPtr = new Ant();
+            tempAntPtr->setLocation(randoNumX, randoNumY);
+            tempAntPtr->setAddress(tempAntPtr);
+            antLog.push_back(tempAntPtr);
             y++;
         }
     }
