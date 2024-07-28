@@ -34,18 +34,27 @@ struct world {
 struct worldLocation {
     int x = 0;
     int y = 0;
-    int* loc;
 };
 
 class Organism {
     private:
         int breedDays = 0;
+        worldLocation location;
+        Organism* address = nullptr;
+
     public:
-        virtual void move(world& arr, int x, int y);
-        virtual void breed(world& arr, int x, int y);
+        virtual void move(world& arr, int x, int y) {};
+        virtual void breed(world& arr, int x, int y){};
         virtual int getBreedDays() const {return breedDays;}
-        virtual void incrementBreedDays() { breedDays++; };
-        virtual void resetBreedDays() { breedDays = 0; };
+        virtual void incrementBreedDays() { breedDays++; }
+        virtual void resetBreedDays() { breedDays = 0; }
+        virtual worldLocation getLocation() { return location; }
+        virtual void setLocation(int x, int y) {
+            location.x = x;
+            location.y = y;
+        }
+        virtual Organism* getAddress() { return address; }
+        virtual void setAddress(Organism* newAddress) { address = newAddress; }
 };
 
 class Ant : public Organism {
@@ -73,10 +82,20 @@ void simulate(world& arr);
 int main(){    
     srand(time(0));
 
-    vector <int> Test;
-    Test.push_back(1);
-    Test.push_back(7);
-    cout<<Test[1];
+    vector <Organism*> doodlebugLog;
+    vector <Organism*> antLog;
+
+    //WORKS
+    /*
+    Organism*  antPtr = new Ant();
+    cout<<"Address of Ptr: "<<&antPtr<<endl;
+    cout<<"Ptr "<<antPtr<<endl;
+
+    Organism*  antPtr = new Ant();
+    antLog.push_back(antPtr);
+    cout<<antLog[0]<<endl;
+
+    */
 
     world world = generateWorld(MAX_GRID_SIZE, DOODLE_COUNT, ANT_COUNT);
     printWorld(world);
@@ -85,6 +104,10 @@ int main(){
     while (runAgain == ""){
         simulate(world);
         printWorld(world);
+        
+        //WORKS
+        //antPtr->move(world, 0, 0);
+
         getline(cin, runAgain);
     }
 
@@ -92,6 +115,7 @@ int main(){
 }
 
 void Ant::move(world& arr, int r, int c){
+    cout<<"Moving!"<<endl;
     int moveChoice = rand() % 3;
     if (moveChoice == UP) {
         if (((r - 1) >= 0) && (arr.grid[r - 1][c] == SPACE)){
