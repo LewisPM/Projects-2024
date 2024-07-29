@@ -345,7 +345,7 @@ void Doodlebug::breed(world& arr, int r, int c, vector <Organism*>& antLog, vect
 
 void Doodlebug::starve(world& arr, int r, int c, vector <Organism*>& doodleBugLog, vector <Organism*>& deadBugLog){
     if (this->getDaysSinceLastMeal() == DOODLE_STARVE_DAYS) {
-        cout<<"Doodle at ["<<this->getLocation().x<<", "<<this->getLocation().y<<"] will die of starvation. ("<<this->getDaysSinceLastMeal()<<")"<<endl;
+        //cout<<"Doodle at ["<<this->getLocation().x<<", "<<this->getLocation().y<<"] will die of starvation. ("<<this->getDaysSinceLastMeal()<<")"<<endl;
         arr.grid[r][c] = SPACE;
         for (int i = 0; i < doodleBugLog.size(); i++){
             Organism* deadDoodle = doodleBugLog[i];
