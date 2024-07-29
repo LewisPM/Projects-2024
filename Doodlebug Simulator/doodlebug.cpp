@@ -57,7 +57,7 @@ class Organism {
         }
         virtual Organism* getAddress() { return address; }
         virtual void setAddress(Organism* newAddress) { address = newAddress; }
-        virtual void starve(world& arr, int x, int y){};
+        virtual void starve(world& arr, int x, int y, vector <Organism*>& doodleBugLog, vector <Organism*>& deadBugLog){};
 
 };
 
@@ -73,7 +73,7 @@ class Doodlebug : public Organism {
     public:
         void move(world& arr, int x, int y, vector <Organism*>& antLog, vector <Organism*>& deadBugLog);
         void breed(world& arr, int x, int y, vector <Organism*>& antLog, vector <Organism*>& doodleBugLog);
-        void starve(world& arr, int x, int y);
+        void starve(world& arr, int x, int y, vector <Organism*>& doodleBugLog, vector <Organism*>& deadBugLog);
         int getDaysSinceLastMeal() const {return daysSinceLastMeal;}
         void incrementDaysSinceLastMeal() { daysSinceLastMeal++; };
         void resetDaysSinceLastMeal() { daysSinceLastMeal = 0; };
@@ -302,62 +302,39 @@ void Doodlebug::move(world& arr, int r, int c, vector <Organism*>& antLog, vecto
     this->incrementBreedDays();
 }
 
-//TO DO: Investigate getLocation x an y values and why some are showing up negative
+//TO DO: Investigate getLocation x an y values and why some are showing up negative - ortherwise done!
 void Doodlebug::breed(world& arr, int r, int c, vector <Organism*>& antLog, vector <Organism*>& doodleBugLog){
     if (this->getBreedDays() >= DOODLE_BREED_DAYS) {
-        cout<<"Doodle at ["<<this->getLocation().x<<", "<<this->getLocation().y<<"] can have a baby"<<endl;
-
         if (((r - 1) >= 0) && (arr.grid[r - 1][c] == SPACE)){
             //baby doodle up
-            cout<<"There is space above me."<<endl;
-
             Organism* babyDoodlePtr = new Doodlebug();
             babyDoodlePtr->setLocation(r - 1, c);
             babyDoodlePtr->setAddress(babyDoodlePtr);
             doodleBugLog.push_back(babyDoodlePtr);
-
-            cout<<"Doodle Baby address is: "<<babyDoodlePtr<<endl;
-
             arr.grid[r-1][c] = DOODLEBUG;
             this->resetBreedDays();
         } else if (((c - 1) >= 0) && (arr.grid[r][c - 1] == SPACE)){
             //baby doodle left
-            cout<<"There is space left of me."<<endl;
-
             Organism* babyDoodlePtr = new Doodlebug();
             babyDoodlePtr->setLocation(r, c - 1);
             babyDoodlePtr->setAddress(babyDoodlePtr);
             doodleBugLog.push_back(babyDoodlePtr);
-
-            cout<<"Doodle Baby address is: "<<babyDoodlePtr<<endl;
-
             arr.grid[r][c-1] = DOODLEBUG;
             this->resetBreedDays();
         } else if (((r + 1) < MAX_GRID_SIZE) && (arr.grid[r + 1][c] == SPACE)){
             //baby doodle down
-            
-            cout<<"There is space below me."<<endl;
-
             Organism* babyDoodlePtr = new Doodlebug();
             babyDoodlePtr->setLocation(r + 1, c);
             babyDoodlePtr->setAddress(babyDoodlePtr);
             doodleBugLog.push_back(babyDoodlePtr);
-
-            cout<<"Doodle Baby address is: "<<babyDoodlePtr<<endl;
-
             arr.grid[r+1][c] = DOODLEBUG;
             this->resetBreedDays();
         } else if (((c + 1) < MAX_GRID_SIZE) && (arr.grid[r][c + 1] == SPACE)){
             //baby doodle right
-            cout<<"There is space right of me."<<endl;
-
             Organism* babyDoodlePtr = new Doodlebug();
             babyDoodlePtr->setLocation(r, c + 1);
             babyDoodlePtr->setAddress(babyDoodlePtr);
             doodleBugLog.push_back(babyDoodlePtr);
-
-            cout<<"Doodle Baby address is: "<<babyDoodlePtr<<endl;
-
             arr.grid[r][c+1] = DOODLEBUG;
             this->resetBreedDays();
         } else {
@@ -366,10 +343,20 @@ void Doodlebug::breed(world& arr, int r, int c, vector <Organism*>& antLog, vect
     }
 }
 
-//TO DO: Complete Doodlebug Starve()
-void Doodlebug::starve(world& arr, int r, int c){
-    if (this->getDaysSinceLastMeal() == 3) {
-        //bugs dies
+void Doodlebug::starve(world& arr, int r, int c, vector <Organism*>& doodleBugLog, vector <Organism*>& deadBugLog){
+    if (this->getDaysSinceLastMeal() == DOODLE_STARVE_DAYS) {
+        cout<<"Doodle at ["<<this->getLocation().x<<", "<<this->getLocation().y<<"] will die of starvation. ("<<this->getDaysSinceLastMeal()<<")"<<endl;
+        arr.grid[r][c] = SPACE;
+        for (int i = 0; i < doodleBugLog.size(); i++){
+            Organism* deadDoodle = doodleBugLog[i];
+            if ((doodleBugLog[i]->getAddress() == this->getAddress()) && (doodleBugLog[i] != doodleBugLog[doodleBugLog.size() - 1])){
+                doodleBugLog.erase(doodleBugLog.begin()+i);
+            } else {
+                doodleBugLog.pop_back();
+            }
+            deadBugLog.push_back(deadDoodle);
+            break;
+        }
     }
 }
 
@@ -424,7 +411,7 @@ void simulate(world& arr, vector <Organism*>& doodleLog, vector <Organism*>& ant
         int doodleY = doodleLog[i]->getLocation().y;
         doodleLog[i]->move(arr, doodleX, doodleY, antLog, deadBugLog);
         doodleLog[i]->breed(arr, doodleX, doodleY, antLog, doodleLog);
-        doodleLog[i]->starve(arr, doodleX, doodleY);
+        doodleLog[i]->starve(arr, doodleX, doodleY, doodleLog, deadBugLog);
     }
     for (int i = 0; i < antLog.size(); i++) {
         int antX = antLog[i]->getLocation().x;
