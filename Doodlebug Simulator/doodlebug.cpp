@@ -46,7 +46,7 @@ class Organism {
         virtual Organism& operator=(const Organism& rhs) { return *address = *rhs.address; }
 
         virtual void move(world& arr, int x, int y, vector <Organism*>& antLog, vector <Organism*>& deadBugLog){};
-        virtual void breed(world& arr, int x, int y){};
+        virtual void breed(world& arr, int x, int y, vector <Organism*>& antLog, vector <Organism*>& doodleBugLog){};
         virtual int getBreedDays() const { return breedDays; }
         virtual void incrementBreedDays() { breedDays++; }
         virtual void resetBreedDays() { breedDays = 0; }
@@ -64,7 +64,7 @@ class Organism {
 class Ant : public Organism {
     public:
         void move(world& arr, int x, int y, vector <Organism*>& antLog, vector <Organism*>& deadBugLog);
-        void breed(world& arr, int x, int y);
+        void breed(world& arr, int x, int y, vector <Organism*>& antLog, vector <Organism*>& doodleBugLog);
 };
 
 class Doodlebug : public Organism {
@@ -72,7 +72,7 @@ class Doodlebug : public Organism {
         int daysSinceLastMeal = 0;
     public:
         void move(world& arr, int x, int y, vector <Organism*>& antLog, vector <Organism*>& deadBugLog);
-        void breed(world& arr, int x, int y);
+        void breed(world& arr, int x, int y, vector <Organism*>& antLog, vector <Organism*>& doodleBugLog);
         void starve(world& arr, int x, int y);
         int getDaysSinceLastMeal() const {return daysSinceLastMeal;}
         void incrementDaysSinceLastMeal() { daysSinceLastMeal++; };
@@ -98,21 +98,12 @@ int main(){
     while (runAgain == ""){
         simulate(world, doodlebugLog, antLog, deadBugLog);
         printWorld(world);
-        
-        cout<<"DEAD BUGS: "<<endl;
-        for (auto i: deadBugLog){
-            cout<<i<<": ";
-            cout<<"["<<i->getLocation().x<<", "<<i->getLocation().y<<"]"<<endl;
-        }
-        
         deadBugLog.clear();
         getline(cin, runAgain);
     }
-
     return 0;
 }
 
-//DONE!
 void Ant::move(world& arr, int r, int c, vector <Organism*>& antLog, vector <Organism*>& deadBugLog){
     int moveChoice = rand() % 4;
     if (moveChoice == 0) {
@@ -148,19 +139,59 @@ void Ant::move(world& arr, int r, int c, vector <Organism*>& antLog, vector <Org
 }
 
 //TO DO: Finish Ant breed()
-void Ant::breed(world& arr, int r, int c){
+void Ant::breed(world& arr, int r, int c, vector <Organism*>& antLog, vector <Organism*>& doodleBugLog){
     if (this->getBreedDays() >= 3) {
+        
+        //cout<<"Ant at ["<<this->getLocation().x<<", "<<this->getLocation().y<<"] can have a baby"<<endl;
+
         if (((r - 1) >= 0) && (arr.grid[r - 1][c] == SPACE)){
             //baby ant up
+            //cout<<"There is space above me."<<endl;
+
+            Organism* babyAntPtr = new Ant();
+            babyAntPtr->setLocation(r - 1, c);
+            babyAntPtr->setAddress(babyAntPtr);
+            antLog.push_back(babyAntPtr);
+            arr.grid[r-1][c] = ANT;
+            //cout<<"Baby address is: "<<babyAntPtr<<" with breeddays: "<<babyAntPtr->getBreedDays()<<endl<<endl;
+
             this->resetBreedDays();
         } else if (((c - 1) >= 0) && (arr.grid[r][c - 1] == SPACE)){
             //baby ant left
+            //cout<<"There is space left of me."<<endl;
+
+            Organism* babyAntPtr = new Ant();
+            babyAntPtr->setLocation(r, c - 1);
+            babyAntPtr->setAddress(babyAntPtr);
+            antLog.push_back(babyAntPtr);
+            arr.grid[r][c-1] = ANT;
+            //cout<<"Baby address is: "<<babyAntPtr<<" with breeddays: "<<babyAntPtr->getBreedDays()<<endl<<endl;
+
             this->resetBreedDays();
         } else if (((r + 1) < MAX_GRID_SIZE) && (arr.grid[r][c + 1] == SPACE)){
             //baby ant down
+
+            //cout<<"There is space below me."<<endl;
+
+            Organism* babyAntPtr = new Ant();
+            babyAntPtr->setLocation(r + 1, c);
+            babyAntPtr->setAddress(babyAntPtr);
+            antLog.push_back(babyAntPtr);
+            arr.grid[r+1][c] = ANT;
+            //cout<<"Baby address is: "<<babyAntPtr<<" with breeddays: "<<babyAntPtr->getBreedDays()<<endl<<endl;
+
             this->resetBreedDays();
         } else if (((c + 1) < MAX_GRID_SIZE) && (arr.grid[r][c + 1] == SPACE)){
             //baby ant right
+            //cout<<"There is space right of me."<<endl;
+
+            Organism* babyAntPtr = new Ant();
+            babyAntPtr->setLocation(r, c + 1);
+            babyAntPtr->setAddress(babyAntPtr);
+            antLog.push_back(babyAntPtr);
+            arr.grid[r][c+1] = ANT;
+            //cout<<"Baby address is: "<<babyAntPtr<<" with breeddays: "<<babyAntPtr->getBreedDays()<<endl<<endl;
+
             this->resetBreedDays();
         } else {
             this->incrementBreedDays();
@@ -168,136 +199,92 @@ void Ant::breed(world& arr, int r, int c){
     }
 }
 
-//TO DO: Correct Doodlebug move()
 void Doodlebug::move(world& arr, int r, int c, vector <Organism*>& antLog, vector <Organism*>& deadBugLog){
     //Priority One - Eat Ant
-    cout<<"I am doodle at "<<r<<", "<<c<<endl;
     if (arr.grid[r - 1][c] == ANT){
-        cout<<"There is an ant above me."<<endl;
         //move up and eat ant
         int iter = 0;
         for (auto i: antLog){
             int antX = i->getLocation().x;
             int antY = i->getLocation().y;
             if ((antX == (r - 1)) && (antY == c)){
-                //"I am the ant you seek"
-                cout<<"I'm ant at iter: "<<iter<<endl;
-
                 Organism* deadAnt = i;
-                if (iter != (antLog.size() - 1)) {
+                if (iter != (antLog.size() - 1)) 
                     antLog.erase(antLog.begin()+iter);
-                }
-                else {
+                else 
                     antLog.pop_back();
-                }
                 deadBugLog.push_back(deadAnt);
-                cout<<"I've added ant to deathlog - now I should exit..."<<endl;
                 break;
             }
             iter++;
         }
-        cout<<"I am doodle at "<<r<<", "<<c<<" and I have eaten, time to move"<<endl;
         this->setLocation(r-1, c);
         arr.grid[r-1][c] = DOODLEBUG;
         arr.grid[r][c] = SPACE;
         this->resetDaysSinceLastMeal();
     } else if (arr.grid[r][c - 1] == ANT){
         //move left and eat ant
-        cout<<"There is an ant left of me."<<endl;
         int iter = 0;
         for (auto i: antLog){
             int antX = i->getLocation().x;
             int antY = i->getLocation().y;
             if ((antX == r) && (antY == (c - 1))){
-                //"I am the ant you seek"
-                                cout<<"I'm ant at iter: "<<iter<<endl;
-
                 Organism* deadAnt = i;
-                if (iter != (antLog.size() - 1)) {
+                if (iter != (antLog.size() - 1)) 
                     antLog.erase(antLog.begin()+iter);
-                }
-                else {
+                else 
                     antLog.pop_back();
-                }
                 deadBugLog.push_back(deadAnt);
-                                cout<<"I've added ant to deathlog - now I should exit..."<<endl;
-
                 break;
             }
             iter++;
         }
-                cout<<"I am doodle at "<<r<<", "<<c<<" and I have eaten, time to move"<<endl;
-
         this->setLocation(r, c-1);
         arr.grid[r][c-1] = DOODLEBUG;
         arr.grid[r][c] = SPACE;
         this->resetDaysSinceLastMeal();
     } else if (arr.grid[r + 1][c] == ANT){
-        //move down and eat ant
-                cout<<"There is an ant below me."<<endl;
-
         int iter = 0;
         for (auto i: antLog){
             int antX = i->getLocation().x;
             int antY = i->getLocation().y;
             if ((antX == (r + 1)) && (antY == c)){
-                //"I am the ant you seek"
-                                cout<<"I'm ant at iter: "<<iter<<endl;
-
                 Organism* deadAnt = i;
-                if (iter != (antLog.size() - 1)) {
+                if (iter != (antLog.size() - 1)) 
                     antLog.erase(antLog.begin()+iter);
-                }
-                else {
+                else 
                     antLog.pop_back();
-                }
                 deadBugLog.push_back(deadAnt);
-                                cout<<"I've added ant to deathlog - now I should exit..."<<endl;
-
                 break;
             }
             iter++;
         }
-                cout<<"I am doodle at "<<r<<", "<<c<<" and I have eaten, time to move"<<endl;
-
         this->setLocation(r+1, c);
         arr.grid[r+1][c] = DOODLEBUG;
         arr.grid[r][c] = SPACE;
         this->resetDaysSinceLastMeal();
     } else if (arr.grid[r][c + 1] == ANT){
         //move right and eat ant
-                cout<<"There is an ant right of me."<<endl;
-
         int iter = 0;
         for (auto i: antLog){
             int antX = i->getLocation().x;
             int antY = i->getLocation().y;
             if ((antX == r) && (antY == (c + 1))){
-                //"I am the ant you seek"
-                                cout<<"I'm ant at iter: "<<iter<<endl;
-
                 Organism* deadAnt = i;
-                if (iter != (antLog.size() - 1)) {
+                if (iter != (antLog.size() - 1)) 
                     antLog.erase(antLog.begin()+iter);
-                }
-                else {
+                else 
                     antLog.pop_back();
-                }
                 deadBugLog.push_back(deadAnt);
-                                cout<<"I've added ant to deathlog - now I should exit..."<<endl;
-
                 break;
             }
             iter++;
         }
-                cout<<"I am doodle at "<<r<<", "<<c<<" and I have eaten, time to move"<<endl;
-
         this->setLocation(r, c+1);
         arr.grid[r][c+1] = DOODLEBUG;
         arr.grid[r][c] = SPACE;
         this->resetDaysSinceLastMeal();
     } else {
-        //DONE!
         int moveChoice = rand() % 4;
         if (moveChoice == 0) {
             //move doodle up
@@ -337,7 +324,7 @@ void Doodlebug::move(world& arr, int r, int c, vector <Organism*>& antLog, vecto
 }
 
 //TO DO: Complete doodlebug breed()
-void Doodlebug::breed(world& arr, int r, int c){
+void Doodlebug::breed(world& arr, int r, int c, vector <Organism*>& antLog, vector <Organism*>& doodleBugLog){
     if (this->getBreedDays() >= 8) {
         if (((r - 1) >= 0) && (arr.grid[r - 1][c] == SPACE)){
             //baby bug up
@@ -364,23 +351,18 @@ void Doodlebug::starve(world& arr, int r, int c){
     }
 }
 
-//DONE!
 world generateWorld(vector <Organism*>& doodleLog, vector <Organism*>& antLog) {
     world arr;
     for (int i = 0; i < MAX_GRID_SIZE; i++){
-        for (int i2 = 0; i2 < MAX_GRID_SIZE; i2++){
+        for (int i2 = 0; i2 < MAX_GRID_SIZE; i2++)
             arr.grid[i][i2] = SPACE;
-        }
     }
-
     int x = 0, y = 0;
-
     while (x < DOODLE_COUNT) {
         int randoNumX = rand() % (MAX_GRID_SIZE - 1);
         int randoNumY = rand() % (MAX_GRID_SIZE - 1);
         if (arr.grid[randoNumX][randoNumY] == SPACE) {
-            arr.grid[randoNumX][randoNumY] = DOODLEBUG;
-            
+            arr.grid[randoNumX][randoNumY] = DOODLEBUG;    
             Organism* tempDoodlePtr = new Doodlebug();
             tempDoodlePtr->setLocation(randoNumX, randoNumY);
             tempDoodlePtr->setAddress(tempDoodlePtr);
@@ -393,7 +375,6 @@ world generateWorld(vector <Organism*>& doodleLog, vector <Organism*>& antLog) {
         int randoNumY = rand() % (MAX_GRID_SIZE - 1);
         if (arr.grid[randoNumX][randoNumY] == SPACE) {
             arr.grid[randoNumX][randoNumY] = ANT;
-
             Organism* tempAntPtr = new Ant();
             tempAntPtr->setLocation(randoNumX, randoNumY);
             tempAntPtr->setAddress(tempAntPtr);
@@ -404,13 +385,11 @@ world generateWorld(vector <Organism*>& doodleLog, vector <Organism*>& antLog) {
     return arr;
 }
 
-//DONE!
 void printWorld(world& arr){
     cout<<endl<<"World Days: "<<arr.days<<endl<<endl;
     for (int r = 0; r < MAX_GRID_SIZE; r++){
-        for (int c = 0; c < MAX_GRID_SIZE; c++){
+        for (int c = 0; c < MAX_GRID_SIZE; c++)
             cout<<arr.grid[r][c];
-        }
         cout<<endl;
     }
     cout<<endl<<"Press ENTER to continue simulation...";
@@ -418,18 +397,18 @@ void printWorld(world& arr){
 
 void simulate(world& arr, vector <Organism*>& doodleLog, vector <Organism*>& antLog, vector <Organism*>& deadBugLog){
     //Doodles go first
-    for (auto i: doodleLog) {
-        int doodleX = i->getLocation().x;
-        int doodleY = i->getLocation().y;
-        i->move(arr, doodleX, doodleY, antLog, deadBugLog);
-        i->breed(arr, doodleX, doodleY);
-        i->starve(arr, doodleX, doodleY);
+    for (int i = 0; i < antLog.size(); i++) {
+        int doodleX = antLog[i]->getLocation().x;
+        int doodleY = antLog[i]->getLocation().y;
+        antLog[i]->move(arr, doodleX, doodleY, antLog, deadBugLog);
+        antLog[i]->breed(arr, doodleX, doodleY, antLog, doodleLog);
+        antLog[i]->starve(arr, doodleX, doodleY);
     }
-    for (auto i: antLog) {
-        int antX = i->getLocation().x;
-        int antY = i->getLocation().y;
-        i->move(arr, antX, antY, antLog, deadBugLog);
-        i->breed(arr, antX, antY);
+    for (int i = 0; i < antLog.size(); i++) {
+        int antX = antLog[i]->getLocation().x;
+        int antY = antLog[i]->getLocation().y;
+        antLog[i]->move(arr, antX, antY, antLog, doodleLog);
+        antLog[i]->breed(arr, antX, antY, antLog, doodleLog);
     }
     arr.days++;
 }
